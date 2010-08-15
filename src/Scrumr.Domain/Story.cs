@@ -1,11 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Ncqrs.Domain;
 
 namespace Scrumr.Domain
 {
-    class Story
+    public class Story : Entity
     {
+        private string _description;
+
+        public Story(AggregateRoot parent, string description) : base(parent)
+        {
+            _description = description;
+        }
     }
 }
