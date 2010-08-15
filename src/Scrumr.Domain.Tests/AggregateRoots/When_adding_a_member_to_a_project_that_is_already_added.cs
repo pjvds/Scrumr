@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FluentAssertions;
 using Ncqrs.Spec;
+using Ncqrs.Eventing.Sourcing;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain.Tests.AggregateRoots
@@ -14,7 +15,7 @@ namespace Scrumr.Domain.Tests.AggregateRoots
         private Guid TheProjectId = Guid.NewGuid();
         private Guid TheMemberId = Guid.NewGuid();
 
-        protected override IEnumerable<Ncqrs.Eventing.Sourcing.SourcedEvent> Given()
+        protected override IEnumerable<SourcedEvent> Given()
         {
             return Prepare.Events
             (
