@@ -22,7 +22,7 @@ namespace Scrumr.Domain.Tests.Scenarios.Creating_a_new_project
         [Then]
         public void Then_published_events_count_should_be_one()
         {
-            PublishedEvents.Count().Should().Be(1);
+            PublishedEvents.Should().HaveCount(1);
         }
 
         [And]
