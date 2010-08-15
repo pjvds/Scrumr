@@ -6,8 +6,14 @@ namespace Scrumr.Events.Project
     /// <summary>
     /// Represents the creation of a new project.
     /// </summary>
-    public class NewProjectCreated : ProjectEvent
+    public class NewProjectCreated : SourcedEvent
     {
+        /// <summary>
+        /// Gets or sets the project id.
+        /// </summary>
+        /// <value>The project id.</value>
+        public Guid ProjectId { get; set; }
+
         /// <summary>
         /// Gets or sets the name of the project.
         /// </summary>
@@ -18,8 +24,9 @@ namespace Scrumr.Events.Project
             
         }
 
-        public NewProjectCreated(string name)
+        public NewProjectCreated(Guid projectId, string name)
         {
+            ProjectId = projectId;
             Name = name;
         }
     }

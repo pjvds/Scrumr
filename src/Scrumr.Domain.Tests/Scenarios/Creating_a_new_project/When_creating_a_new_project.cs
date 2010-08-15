@@ -10,7 +10,7 @@ namespace Scrumr.Domain.Tests.Scenarios.Creating_a_new_project
     [Specification]
     public class When_creating_a_new_project : AutoMappedCommandTestFixture<CreateNewProject>
     {
-        protected override CreateNewProject When()
+        protected override CreateNewProject WhenExecutingCommand()
         {
             return new CreateNewProject
             {

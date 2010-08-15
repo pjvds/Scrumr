@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using FluentAssertions;
 using Scrumr.Commands;
 using Ncqrs.Spec;
@@ -11,7 +8,7 @@ namespace Scrumr.Domain.Tests.Scenarios.Creating_a_new_project
     [Specification]
     public class When_creating_project_with_a_too_long_name : AutoMappedCommandTestFixture<CreateNewProject>
     {
-        protected override CreateNewProject When()
+        protected override CreateNewProject WhenExecutingCommand()
         {
             return new CreateNewProject
             (

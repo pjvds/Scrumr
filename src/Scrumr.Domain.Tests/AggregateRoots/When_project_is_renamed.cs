@@ -4,7 +4,6 @@ using System.Linq;
 using FluentAssertions;
 using Ncqrs.Eventing.Sourcing;
 using Ncqrs.Spec;
-using Scrumr.Events;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain.Tests.AggregateRoots
@@ -20,7 +19,7 @@ namespace Scrumr.Domain.Tests.AggregateRoots
         {
             return Prepare.Events
             (
-                new NewProjectCreated(OldName)
+                new NewProjectCreated(TheId, OldName)
             )
             .ForSource(TheId);
         }

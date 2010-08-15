@@ -20,7 +20,7 @@ namespace Scrumr.Domain
 
             EventSourceId = id;
 
-            var e = new NewProjectCreated(name);
+            var e = new NewProjectCreated(id, name);
             ApplyEvent(e);
         }
 
@@ -48,6 +48,8 @@ namespace Scrumr.Domain
 
         public void AddMember(Guid memberId)
         {
+            if(_members.Contains(memberId)) throw new DomainException(string.Format("Already contains member with id {0}.", memberId));
+
             var e = new MemberAddedToProject(memberId);
             ApplyEvent(e);
         }
@@ -67,6 +69,16 @@ namespace Scrumr.Domain
         private void OnProjectRenamed(ProjectRenamed e)
         {
             _name = e.NewName;
+        }
+
+        private void OnMemberAdded(MemberAddedToProject e)
+        {
+            _members.Add(e.MemberId);
+        }
+
+        private void OnMemberRemoved(MemberRemovedFromProject e)
+        {
+            _members.Remove(e.MemberId);
         }
     }
 }

@@ -13,7 +13,11 @@ namespace Scrumr.Domain
 
         public ProductBacklog(Project parent, string name) : base(parent)
         {
-            RegisterHandler(new RedirectingSourcedEventHandler<ProductBacklogRenamed>(OnProductBacklogRenamed));
+            // TODO: Improve it with simpler handler or introduction of EntityMappedByConvention class.
+            RegisterHandler(
+                new TypeAndCallbackThresholdedActionBasedDomainEventHandler(
+                    (e) => OnStoryAdded((StoryAddedToProductBacklog) e),
+                    (e) => e is StoryAddedToProductBacklog, typeof (StoryAddedToProductBacklog)));
 
             _name = name;
         }
@@ -28,6 +32,12 @@ namespace Scrumr.Domain
         {
             var e = new ProductBacklogRenamed(newName);
             ApplyEvent(e);
+        }
+
+        private void OnStoryAdded(StoryAddedToProductBacklog e)
+        {
+            // TODO: Determine what to do with entities that have a entity as parent
+            // _stories.Add(new Story());
         }
 
         private void OnProductBacklogRenamed(ProductBacklogRenamed e)
