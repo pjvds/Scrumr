@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Scrumr.Commands" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Scrumr.Commands" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:6000/IScrumrCommandService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:6000/IScrumrCommandService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Ncqrs.Commanding" />
+  <xs:complexType name="CreateNewProject">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Ncqrs.Commanding" base="q1:CommandBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProjectId" type="ser:guid" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CreateNewProject" nillable="true" type="tns:CreateNewProject" />
+</xs:schema>

@@ -1,0 +1,94 @@
+/*
+Template Name: School Education
+File: Navigation CSS
+Author: OS Templates
+Author URI: http://www.os-templates.com/
+Licence: <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-Share Alike 3.0 Unported License</a>
+*/
+
+#header #topnav{
+	display:block;
+	float:right;
+	width:650px;
+	margin:30px 0 0 0;
+	padding:0;
+	font-size:13px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	text-align:right;
+	}
+	
+#header ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	}
+
+#header li{
+	display:inline;
+	margin-right:35px;
+	}
+
+#header li a:link, #header li a:visited, #header li a:hover{
+	margin:0;
+	padding:0 3px 10px 3px;
+	color:#FFFFFF;
+	background-color:#2D3134;
+	border-bottom:1px solid #2D3134;
+	}
+
+#header li a:hover, #header li.active a{
+	color:#02ACEE;
+	background-color:#2D3134;
+	border-bottom-color:#02ACEE;
+	}
+
+#header #topnav li.last{
+	margin-right:0;
+	}
+
+/* ----------------------------------------------Column Navigation-------------------------------------*/
+
+#column .subnav{display:block; width:250px; padding:25px; background-color:#F9F9F9; margin-bottom:30px;}
+
+#column .subnav h2{
+	margin:0 0 20px 0;
+	padding:0 0 14px 0;
+	font-size:20px;
+	font-weight:normal;
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:#666666;
+	background-color:#F9F9F9;
+	line-height:normal;
+	border-bottom:1px dotted #666666;
+}
+
+#column .subnav ul{
+	margin:0;
+	padding:0;
+	list-style:none;
+	}
+
+#column .subnav li{
+	margin:0 0 3px 0;
+	padding:0;
+	}
+
+#column .subnav ul ul, #column .subnav ul ul ul, #column .subnav ul ul ul ul, #column .subnav ul ul ul ul ul{border-top:none; padding-top:0;}
+
+#column .subnav a{
+	display:block;
+	margin:0;
+	padding:5px 10px 5px 20px;
+	color:#777777;
+	background:url(../images/blue_file.gif) no-repeat 10px center #F9F9F9;
+	text-decoration:none;
+	border-bottom:1px dotted #666666;
+	}
+
+#column .subnav a:hover{color:#02ACEE; background-color:#F9F9F9;}
+
+#column .subnav ul ul a, #column .subnav ul ul ul a, #column .subnav ul ul ul ul a, #column .subnav ul ul ul ul ul a{background:url(../images/black_file.gif) no-repeat #F9F9F9;}
+#column .subnav ul ul a{padding-left:40px; background-position:30px center;}
+#column .subnav ul ul ul a{padding-left:50px; background-position:40px center;}
+#column .subnav ul ul ul ul a{padding-left:60px; background-position:50px center;}
+#column .subnav ul ul ul ul ul a{padding-left:70px; background-position:60px center;}
