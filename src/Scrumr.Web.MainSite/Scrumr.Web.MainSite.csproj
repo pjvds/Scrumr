@@ -39,8 +39,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -106,6 +108,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Views\Project\Create.aspx" />
+    <Content Include="Views\Project\Details.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -155,6 +158,10 @@
     <ProjectReference Include="..\Scrumr.Commands\Scrumr.Commands.csproj">
       <Project>{37C398B2-9CA7-4922-AADC-634950955A62}</Project>
       <Name>Scrumr.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrumr.Web.MainSite.ReadModel\Scrumr.Web.MainSite.ReadModel.csproj">
+      <Project>{CB59A692-F710-4C29-8C65-DF17CE3AA677}</Project>
+      <Name>Scrumr.Web.MainSite.ReadModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

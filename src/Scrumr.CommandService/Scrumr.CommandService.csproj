@@ -39,6 +39,9 @@
     <Reference Include="Ncqrs.Config.StructureMap">
       <HintPath>..\..\lib\Ncqrs\Ncqrs.Config.StructureMap.dll</HintPath>
     </Reference>
+    <Reference Include="Ncqrs.Eventing.Storage.NoDB">
+      <HintPath>..\..\lib\Ncqrs\Ncqrs.Eventing.Storage.NoDB.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\..\lib\Ncqrs\StructureMap.dll</HintPath>
     </Reference>
@@ -94,6 +97,10 @@
     <ProjectReference Include="..\Scrumr.Domain\Scrumr.Domain.csproj">
       <Project>{689F126F-4E72-4F51-9BB2-448B623C6F00}</Project>
       <Name>Scrumr.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrumr.Web.MainSite.ReadModel\Scrumr.Web.MainSite.ReadModel.csproj">
+      <Project>{CB59A692-F710-4C29-8C65-DF17CE3AA677}</Project>
+      <Name>Scrumr.Web.MainSite.ReadModel</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

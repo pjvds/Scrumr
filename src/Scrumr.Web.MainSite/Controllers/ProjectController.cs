@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Scrumr.Commands;
 using Scrumr.Web.MainSite.Commanding;
+using Scrumr.Web.MainSite.ReadModel;
 
 namespace Scrumr.Web.MainSite.Controllers
 {
@@ -23,7 +24,17 @@ namespace Scrumr.Web.MainSite.Controllers
         {
             var service = new ScrumrCommandServiceClient();
             service.ExecuteCommand(cmd);
-            return View();
+
+            return RedirectToAction("Details", new {cmd.ProjectId});
+        }
+
+        public ActionResult Details(Guid projectId)
+        {
+            using(var context = new ReadModelContainer())
+            {
+                var model = context.ProjectModels.Single(p => p.Id == projectId);
+                return View(model);
+            }
         }
     }
 }

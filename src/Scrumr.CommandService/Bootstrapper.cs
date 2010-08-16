@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web.Hosting;
 using Ncqrs.Commanding.CommandExecution.Mapping.Attributes;
 using Ncqrs.Config.StructureMap;
 using Ncqrs;
@@ -7,6 +8,10 @@ using Ncqrs.Eventing.Storage.SQL;
 using Scrumr.Commands;
 using Ncqrs.Eventing.Storage;
 using Scrumr.CommandService.Properties;
+using Ncqrs.Eventing.Storage.NoDB;
+using System.IO;
+using Ncqrs.Eventing.ServiceModel.Bus;
+using Scrumr.Web.MainSite.ReadModel.Denormalizer;
 
 namespace Scrumr.CommandServicing
 {
@@ -18,6 +23,7 @@ namespace Scrumr.CommandServicing
             {
                 c.For<ICommandService>().Use(BuildCommandService);
                 c.For<IEventStore>().Use(BuildEventStore);
+                c.For<IEventBus>().Use(BuildEventBus);
             });
             
             NcqrsEnvironment.Configure(config);
@@ -35,8 +41,19 @@ namespace Scrumr.CommandServicing
 
         private static IEventStore BuildEventStore()
         {
-            var store = new MsSqlServerEventStore(Settings.Default.EventStoreConnectionString);
+            var path = Path.Combine(HostingEnvironment.ApplicationPhysicalPath, "App_Data\\EventStore");
+            var store = new NoDBEventStore(path);
             return store;
+        }
+
+        private static IEventBus BuildEventBus()
+        {
+            var denormalizerAssembly = typeof (ProjectDenormalizer).Assembly;
+
+            var bus = new InProcessEventBus();
+            bus.RegisterAllHandlersInAssembly(denormalizerAssembly);
+
+            return bus;
         }
     }
 }
