@@ -16,3 +16,4 @@ bin
 *.log
 *.swp
 *.user
+src/Scrumr.CommandService/App_Data/EventStore/
