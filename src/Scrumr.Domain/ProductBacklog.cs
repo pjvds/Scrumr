@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Ncqrs.Domain;
+using Ncqrs.Eventing.Sourcing;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain
@@ -21,6 +23,17 @@ namespace Scrumr.Domain
             ApplyEvent(e);
         }
 
+        public void RemoveStory(Guid storyId)
+        {
+            if (!_stories.Exists(s => s.EntityId == storyId))
+            {
+                throw new DomainException("Cannot remove story that is not part of this product backlog.");
+            }
+
+            var e = new StoryRemovedFromProductBacklog(storyId);
+            ApplyEvent(e);
+        }
+
         public void Renamed(string newName)
         {
             var e = new ProductBacklogRenamed(newName);
@@ -31,6 +44,11 @@ namespace Scrumr.Domain
         {
             // TODO: Determine what to do with entities that have a entity as parent
             // _stories.Add(new Story());
+        }
+
+        private void OnStoryRemoved(StoryRemovedFromProductBacklog e)
+        {
+            _stories.RemoveAll(s => s.EntityId == e.EntityId);
         }
 
         private void OnProductBacklogRenamed(ProductBacklogRenamed e)

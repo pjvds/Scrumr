@@ -52,6 +52,7 @@
     <Compile Include="Project\ProjectRenamed.cs" />
     <Compile Include="Project\ProjectEvent.cs" />
     <Compile Include="Project\StoryAddedToProductBacklog.cs" />
+    <Compile Include="Project\StoryRemovedFromProductBacklog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
