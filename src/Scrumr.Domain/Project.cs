@@ -9,18 +9,26 @@ namespace Scrumr.Domain
         private string _name;
         private List<Guid> _members = new List<Guid>();
 
-        protected Project()
+        private ProductBacklog _productBacklog;
+
+        public ProductBacklog ProductBacklog
         {
-            // Needed for Ncqrs.
+            get { return _productBacklog; }
         }
 
-        public Project(Guid id, string name)
+        protected Project()
+        {
+        }
+
+        public Project(Guid id, string name) : this()
         {
             ValidateName(name);
 
             EventSourceId = id;
 
-            var e = new NewProjectCreated(id, name);
+            var productBacklogId = Guid.NewGuid(); // TODO: maybe we need to add an GenerateEntityId method to the agg root class that uses the generator from the environment.
+
+            var e = new NewProjectCreated(id, productBacklogId, name);
             ApplyEvent(e);
         }
 
@@ -63,6 +71,7 @@ namespace Scrumr.Domain
         private void OnProjectCreated(NewProjectCreated e)
         {
             EventSourceId = e.ProjectId;
+            _productBacklog = new ProductBacklog(this, e.ProjectId, "Product backlog");
             _name = e.Name;
         }
 

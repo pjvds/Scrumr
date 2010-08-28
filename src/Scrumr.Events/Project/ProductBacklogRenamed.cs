@@ -1,8 +1,9 @@
 ﻿using System;
+using Ncqrs.Eventing.Sourcing;
 
 namespace Scrumr.Events.Project
 {
-    public class ProductBacklogRenamed : ProjectEvent
+    public class ProductBacklogRenamed : SourcedEntityEvent
     {
         public string NewName { get; set; }
 

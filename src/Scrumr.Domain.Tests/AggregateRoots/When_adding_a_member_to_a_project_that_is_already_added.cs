@@ -13,13 +13,14 @@ namespace Scrumr.Domain.Tests.AggregateRoots
     public class When_adding_a_member_to_a_project_that_is_already_added : AggregateRootTestFixture<Project>
     {
         private Guid TheProjectId = Guid.NewGuid();
+        private Guid TheProductBacklogId = Guid.NewGuid();
         private Guid TheMemberId = Guid.NewGuid();
 
         protected override IEnumerable<SourcedEvent> Given()
         {
             return Prepare.Events
             (
-                new NewProjectCreated(TheProjectId, "My Project"),
+                new NewProjectCreated(TheProjectId, TheProductBacklogId, "My Project"),
                 new MemberAddedToProject(TheMemberId)
             )
             .ForSource(TheProjectId);

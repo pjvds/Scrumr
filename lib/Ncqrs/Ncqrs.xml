@@ -189,6 +189,13 @@
             The abstract concept of an entity -- an object living inside an aggregate with own thread of identity.
             </summary>
     </member>
+    <member name="P:Ncqrs.Domain.Entity.EntityId">
+      <summary>
+            Gets the unique identifier for this entity. This identifier
+            is set on construction and should not be changed. The creator
+            of this entity is responsible for providing the right identfier.
+            </summary>
+    </member>
     <member name="T:Ncqrs.Eventing.Storage.PropertyBagConverter">
       <summary>
             Converts an <see cref="T:Ncqrs.Eventing.IEvent" /> from/to a flattened structure suitable for storing in an <see cref="T:Ncqrs.Eventing.Storage.IEventStore" />.
@@ -253,49 +260,6 @@
       <remarks>
             The default implementation is to use the type's assembly qualified name.
             </remarks>
-    </member>
-    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy">
-      <summary>
-            An internal event handler mapping strategy that creates event handlers based on mapping that is done by lambdas.
-            <remarks>
-            If u inherit from the <see cref="T:Ncqrs.Domain.AggregateRootMappedWithExpressions" /> u must implement the method
-            InitializeEventHandlers(); Inside this method u can define the mapping between an event and an event source method
-            in a strongly typed fashion.
-            <code>
-            public class Foo : AggregateRootMappedWithExpressions
-            {
-                public override void InitializeEventHandlers()
-                {
-                    Map{SomethingHappenedEvent}().ToHandler(x =&gt; SomethingHasHappened(x));
-                }
-                
-                public void SomethingHasHappened(SourcedEvent e)
-                {}
-            }
-            
-            public class SomethingHappenedEvent : SourcedEvent
-            {}
-            </code></remarks></summary>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy.GetEventHandlersFromAggregateRoot(System.Object)">
-      <summary>
-            Gets the event handlers from aggregate root based on the given mapping.
-            </summary>
-      <param name="eventSource">The aggregate root.</param>
-      <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy" />
-      <returns>All the <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" />'s created based on the given mapping.</returns>
-      <requires description="The eventSource cannot be null." exception="T:System.ArgumentNullException">eventSource != null</requires>
-      <exception cref="T:System.ArgumentNullException">eventSource == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy.CreateHandlerForMethod(System.Object,System.Reflection.MethodInfo,System.Boolean)">
-      <summary>
-            Converts the given method into an <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" /> object.
-            </summary>
-      <param name="eventSource">The event source from which we want to invoke the method.</param>
-      <param name="method">The method to invoke</param>
-      <param name="exact">
-        <b>True</b> if we need to have an exact match, otherwise <b>False</b>.</param>
-      <returns>An <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" /> that handles the execution of the given method.</returns>
     </member>
     <member name="T:Ncqrs.Commanding.CommandExecution.Mapping.Attributes.MapsToAggregateRootConstructorAttribute">
       <summary>
@@ -1154,31 +1118,6 @@
       <requires inheritedFrom="M:Ncqrs.Domain.Storage.IDomainRepository.GetById(System.Type,System.Guid)" inheritedFromTypeName="IDomainRepository" exception="T:System.ArgumentNullException">aggregateRootType != null</requires>
       <exception cref="T:System.ArgumentNullException">aggregateRootType == null</exception>
     </member>
-    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy">
-      <summary>
-            An internal event handler mapping strategy that creates event handlers based on mapping that
-            is done by attributes.
-            <remarks>Use the <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute" /> to mark event handler methods as an event handler. You can only
-            mark methods that following rules:
-            <list type="number"><item><description>The method should be an instance method (no static).</description></item><item><description>It should accept 1 parameter.</description></item><item><description>The parameter should be, or inherited from, the <see cref="T:Ncqrs.Eventing.Sourcing.SourcedEvent" /> class.</description></item><item><description>The method should be marked with the <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute" />.</description></item></list><code>public class Foo : AggregateRootMappedWithAttributes
-            {
-                [EventHandler]
-                private void onFooEvent(FooEvent eventToHandle)
-                {
-                    // ...
-                }
-            }</code></remarks></summary>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy.GetEventHandlersFromAggregateRoot(System.Object)">
-      <summary>
-            Gets the event handlers from aggregate root based on attributes.
-            </summary>
-      <param name="eventSource">The aggregate root.</param>
-      <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy" />
-      <returns>All the <see cref="!:IDomainEventHandler" />'s created based on attribute mapping.</returns>
-      <requires description="The eventSource cannot be null." exception="T:System.ArgumentNullException">eventSource != null</requires>
-      <exception cref="T:System.ArgumentNullException">eventSource == null</exception>
-    </member>
     <member name="M:Ncqrs.Eventing.Storage.PropertyBag.#ctor(System.String)">
       <summary>
               Initializes a new instance of the <see cref="T:System.Object" /> class.
@@ -1522,6 +1461,19 @@
       <summary>
             Gets a snapshot of a particular event source, if one exists. Otherwise, returns <c>null</c>.
             </summary>
+    </member>
+    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.ConventionBasedEventHandlerMappingStrategy">
+      <summary>
+            A internal event handler mapping strategy that maps methods as an event handler based on method name and parameter type.
+            <remarks>
+            All method that match the following requirements are mapped as an event handler:
+            <list type="number"><item><value>
+                        Method name should start with <i>On</i> or <i>on</i>. Like: <i>OnProductAdded</i> or <i>onProductAdded</i>.
+                    </value></item><item><value>
+                        The method should only accept one parameter.
+                    </value></item><item><value>
+                        The parameter must be, or inhired from, the <see cref="T:Ncqrs.Eventing.Sourcing.SourcedEvent" /> class.
+                    </value></item></list></remarks></summary>
     </member>
     <member name="T:Ncqrs.NcqrsEnvironment">
       <summary>The Ncqrs environment. This class gives access to other components registered in this environment.
@@ -1922,9 +1874,9 @@
             A aggregate root that uses lambda style mapping to map internal event handlers. The following method should be mapped 
             </summary>
       <remarks>
-            This aggregate root uses the  <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy" /> to get the internal event handlers.
+            This aggregate root uses the  <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy" /> to get the internal event handlers.
             </remarks>
-      <seealso cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedSourcedEventHandlerMappingStrategy" />
+      <seealso cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy" />
     </member>
     <member name="M:Ncqrs.Domain.AggregateRootMappedWithExpressions.Map``1">
       <summary>
@@ -2139,6 +2091,31 @@
       <param name="command">The command to execute.</param>
       <exception cref="!:ArgumentNullException">Occurs when <i>command</i> is null.</exception>
     </member>
+    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy">
+      <summary>
+            An internal event handler mapping strategy that creates event handlers based on mapping that
+            is done by attributes.
+            <remarks>Use the <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute" /> to mark event handler methods as an event handler. You can only
+            mark methods that following rules:
+            <list type="number"><item><description>The method should be an instance method (no static).</description></item><item><description>It should accept 1 parameter.</description></item><item><description>The parameter should be, or inherited from, the <see cref="T:Ncqrs.Eventing.Sourcing.SourcedEvent" /> class.</description></item><item><description>The method should be marked with the <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute" />.</description></item></list><code>public class Foo : AggregateRootMappedWithAttributes
+            {
+                [EventHandler]
+                private void onFooEvent(FooEvent eventToHandle)
+                {
+                    // ...
+                }
+            }</code></remarks></summary>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy.GetEventHandlers(System.Object)">
+      <summary>
+            Gets the event handlers from aggregate root based on attributes.
+            </summary>
+      <param name="target">The aggregate root.</param>
+      <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy" />
+      <returns>All the <see cref="!:IDomainEventHandler" />'s created based on attribute mapping.</returns>
+      <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
+      <exception cref="T:System.ArgumentNullException">target == null</exception>
+    </member>
     <member name="P:Ncqrs.Eventing.Storage.StoredEvent.EventName">
       <summary>
               Gets or sets the event name of the original object from which this document was constructed.
@@ -2300,22 +2277,6 @@
       <param name="context">The context of the current command
             execution.
             </param>
-    </member>
-    <member name="T:Ncqrs.Eventing.Sourcing.TypeAndCallbackThresholdedActionBasedDomainEventHandler">
-      <summary>
-             An event handler that uses a specified action as handler, but only calls this when the event
-             is accepted by provided callback method and is of a certain type, or is inherited from it.
-            </summary>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.TypeAndCallbackThresholdedActionBasedDomainEventHandler.#ctor(System.Action{Ncqrs.Eventing.Sourcing.SourcedEvent},System.Func{Ncqrs.Eventing.Sourcing.SourcedEvent,System.Boolean},System.Type,System.Boolean)">
-      <summary>
-              Initializes a new instance of the <see cref="T:Ncqrs.Eventing.Sourcing.TypeAndCallbackThresholdedActionBasedDomainEventHandler" /> class.
-            </summary>
-      <param name="handler">The handler that will be called to handle a event when the threshold did not hold the event.</param>
-      <param name="filterCallback">A filter function.</param>
-      <param name="eventTypeThreshold">The event type that should be used as threshold.</param>
-      <param name="exact">if set to <c>true</c> the threshold will hold all types that are not the same type; otherwise it hold 
-            all types that are not inhered from the event type threshold or implement the interface that is specified by the threshold type.</param>
     </member>
     <member name="T:Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute">
       <summary>
@@ -2502,18 +2463,53 @@
         <c>true</c> if [is command mapped] [the specified target]; otherwise, <c>false</c>.
             </returns>
     </member>
-    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.ConventionBasedSourcedEventHandlerMappingStrategy">
+    <member name="P:Ncqrs.Eventing.Sourcing.SourcedEntityEvent.EntityId">
       <summary>
-            A internal event handler mapping strategy that maps methods as an event handler based on method name and parameter type.
+            Gets the id of the entity that causes this event.
+            </summary>
+    </member>
+    <member name="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy">
+      <summary>
+            An internal event handler mapping strategy that creates event handlers based on mapping that is done by lambdas.
             <remarks>
-            All method that match the following requirements are mapped as an event handler:
-            <list type="number"><item><value>
-                        Method name should start with <i>On</i> or <i>on</i>. Like: <i>OnProductAdded</i> or <i>onProductAdded</i>.
-                    </value></item><item><value>
-                        The method should only accept one parameter.
-                    </value></item><item><value>
-                        The parameter must be, or inhired from, the <see cref="T:Ncqrs.Eventing.Sourcing.SourcedEvent" /> class.
-                    </value></item></list></remarks></summary>
+            If u inherit from the <see cref="T:Ncqrs.Domain.AggregateRootMappedWithExpressions" /> u must implement the method
+            InitializeEventHandlers(); Inside this method u can define the mapping between an event and an event source method
+            in a strongly typed fashion.
+            <code>
+            public class Foo : AggregateRootMappedWithExpressions
+            {
+                public override void InitializeEventHandlers()
+                {
+                    Map{SomethingHappenedEvent}().ToHandler(x =&gt; SomethingHasHappened(x));
+                }
+                
+                public void SomethingHasHappened(SourcedEvent e)
+                {}
+            }
+            
+            public class SomethingHappenedEvent : SourcedEvent
+            {}
+            </code></remarks></summary>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy.GetEventHandlers(System.Object)">
+      <summary>
+            Gets the event handlers from aggregate root based on the given mapping.
+            </summary>
+      <param name="target">The aggregate root.</param>
+      <see cref="T:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy" />
+      <returns>All the <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" />'s created based on the given mapping.</returns>
+      <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
+      <exception cref="T:System.ArgumentNullException">target == null</exception>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ExpressionBasedEventHandlerMappingStrategy.CreateHandlerForMethod(System.Object,System.Reflection.MethodInfo,System.Boolean)">
+      <summary>
+            Converts the given method into an <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" /> object.
+            </summary>
+      <param name="eventSource">The event source from which we want to invoke the method.</param>
+      <param name="method">The method to invoke</param>
+      <param name="exact">
+        <b>True</b> if we need to have an exact match, otherwise <b>False</b>.</param>
+      <returns>An <see cref="T:Ncqrs.Eventing.Sourcing.ISourcedEventHandler" /> that handles the execution of the given method.</returns>
     </member>
     <member name="T:Ncqrs.LogManager">
       <summary>
@@ -2607,71 +2603,70 @@
       <requires exception="T:System.ArgumentNullException">type != null</requires>
       <exception cref="T:System.ArgumentNullException">type == null</exception>
     </member>
-    <member name="T:Ncqrs.Eventing.Sourcing.EventSource">
-      <invariant description="The member _unacceptedEvents should never be null.">_uncommittedEvents != null</invariant>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)">
-      <requires description="The Event cannot be null." exception="T:System.ArgumentNullException">evnt != null</requires>
-      <exception cref="T:System.ArgumentNullException">evnt == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.RegisterHandler(Ncqrs.Eventing.Sourcing.ISourcedEventHandler)">
-      <requires description="The handler cannot be null." exception="T:System.ArgumentNullException">handler != null</requires>
-      <exception cref="T:System.ArgumentNullException">handler == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.GetUncommittedEvents">
-      <ensures description="The result of this method should never be null.">Contract.Result&lt;IEnumerable&lt;SourcedEvent&gt;&gt;() != null</ensures>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy.FirstParameterType(System.Reflection.MethodInfo)">
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy.IsMarkedAsEventHandler(System.Reflection.MethodInfo,Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute@)">
       <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
       <exception cref="T:System.ArgumentNullException">target == null</exception>
     </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy.NumberOfParameters(System.Reflection.MethodInfo)">
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy.FirstParameterType(System.Reflection.MethodInfo)">
       <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
       <exception cref="T:System.ArgumentNullException">target == null</exception>
     </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedSourcedEventHandlerMappingStrategy.IsMarkedAsEventHandler(System.Reflection.MethodInfo,Ncqrs.Eventing.Sourcing.Mapping.EventHandlerAttribute@)">
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.AttributeBasedEventHandlerMappingStrategy.NumberOfParameters(System.Reflection.MethodInfo)">
       <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
       <exception cref="T:System.ArgumentNullException">target == null</exception>
     </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ConventionBasedSourcedEventHandlerMappingStrategy.GetEventHandlersFromAggregateRoot(System.Object)">
-      <requires description="The eventSource cannot be null." exception="T:System.ArgumentNullException">eventSource != null</requires>
-      <exception cref="T:System.ArgumentNullException">eventSource == null</exception>
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.ConventionBasedEventHandlerMappingStrategy.GetEventHandlers(System.Object)">
+      <requires description="The target cannot be null." exception="T:System.ArgumentNullException">target != null</requires>
+      <exception cref="T:System.ArgumentNullException">target == null</exception>
       <ensures description="The result should never be null.">Contract.Result&lt;IEnumerable&lt;ISourcedEventHandler&gt;&gt;() != null</ensures>
     </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.MappedAggregateRoot.#ctor(Ncqrs.Eventing.Sourcing.Mapping.ISourcedEventHandlerMappingStrategy)">
+    <member name="M:Ncqrs.Eventing.Sourcing.Mapping.MappedAggregateRoot.#ctor(Ncqrs.Eventing.Sourcing.Mapping.IEventHandlerMappingStrategy)">
       <requires description="The strategy cannot be null." exception="T:System.ArgumentNullException">strategy != null</requires>
       <exception cref="T:System.ArgumentNullException">strategy == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventHander`1.Ncqrs#Eventing#Sourcing#ISourcedEventHandler#HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)">
-      <requires description="The sourcedEvent cannot be null." inheritedFrom="M:Ncqrs.Eventing.Sourcing.ISourcedEventHandler.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)" inheritedFromTypeName="ISourcedEventHandler" exception="T:System.ArgumentNullException">sourcedEvent != null</requires>
-      <exception cref="T:System.ArgumentNullException">sourcedEvent == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.TypeAndCallbackThresholdedActionBasedDomainEventHandler.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)">
-      <requires description="The sourcedEvent cannot be null." inheritedFrom="M:Ncqrs.Eventing.Sourcing.ISourcedEventHandler.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)" inheritedFromTypeName="ISourcedEventHandler" exception="T:System.ArgumentNullException">sourcedEvent != null</requires>
-      <exception cref="T:System.ArgumentNullException">sourcedEvent == null</exception>
     </member>
     <member name="T:Ncqrs.Eventing.Sourcing.SourcedEventStream">
       <invariant>_sequenceOffset &gt;= 0</invariant>
       <invariant>Contract.ForAll(_events, (sourcedEvent) =&gt; sourcedEvent.EventSourceId == _eventSourceId)</invariant>
       <invariant>Contract.ForAll(_events, (sourcedEvent) =&gt; sourcedEvent.EventSequence == (_sequenceOffset + _events.IndexOf(sourcedEvent) + 1))</invariant>
     </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventStream.#ctor(System.Guid,System.Int64)">
+      <requires>sequenceOffset &gt;= 0</requires>
+    </member>
     <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventStream.GetEnumerator">
       <ensures inheritedFrom="M:System.Collections.Generic.IEnumerable`1.GetEnumerator" inheritedFromTypeName="IEnumerable">Contract.Result&lt;IEnumerator&lt;T&gt;&gt;() != null</ensures>
       <ensures inheritedFrom="M:System.Collections.Generic.IEnumerable`1.GetEnumerator" inheritedFromTypeName="IEnumerable">Contract.Result&lt;IEnumerator&lt;T&gt;&gt;().Model == ((IEnumerable)this).Model</ensures>
-    </member>
-    <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventStream.#ctor(System.Guid,System.Int64)">
-      <requires>sequenceOffset &gt;= 0</requires>
     </member>
     <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventStream.System#Collections#IEnumerable#GetEnumerator">
       <ensures inheritedFrom="M:System.Collections.IEnumerable.GetEnumerator" inheritedFromTypeName="IEnumerable">Contract.Result&lt;IEnumerator&gt;() != null</ensures>
       <ensures inheritedFrom="M:System.Collections.IEnumerable.GetEnumerator" inheritedFromTypeName="IEnumerable">Contract.Result&lt;IEnumerator&gt;().Model == this.Model</ensures>
       <ensures inheritedFrom="M:System.Collections.IEnumerable.GetEnumerator" inheritedFromTypeName="IEnumerable">Contract.Result&lt;IEnumerator&gt;().CurrentIndex == -1</ensures>
     </member>
-    <member name="M:Ncqrs.Eventing.Storage.AttributeEventTypeResolver.ResolveType(System.String)">
-      <requires inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">eventName != null</requires>
-      <ensures inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">Contract.Result&lt;Type&gt;() != null</ensures>
+    <member name="M:Ncqrs.Eventing.Sourcing.SourcedEventHander`1.Ncqrs#Eventing#Sourcing#ISourcedEventHandler#HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)">
+      <requires description="The sourcedEvent cannot be null." inheritedFrom="M:Ncqrs.Eventing.Sourcing.ISourcedEventHandler.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)" inheritedFromTypeName="ISourcedEventHandler" exception="T:System.ArgumentNullException">sourcedEvent != null</requires>
+      <exception cref="T:System.ArgumentNullException">sourcedEvent == null</exception>
     </member>
-    <member name="M:Ncqrs.Eventing.Storage.AttributeEventTypeResolver.EventNameFor(System.Type)">
+    <member name="T:Ncqrs.Eventing.Sourcing.EventSource">
+      <invariant description="The member _unacceptedEvents should never be null.">_uncommittedEvents != null</invariant>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.GetUncommittedEvents">
+      <ensures description="The result of this method should never be null.">Contract.Result&lt;IEnumerable&lt;SourcedEvent&gt;&gt;() != null</ensures>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.RegisterHandler(Ncqrs.Eventing.Sourcing.ISourcedEventHandler)">
+      <requires description="The handler cannot be null." exception="T:System.ArgumentNullException">handler != null</requires>
+      <exception cref="T:System.ArgumentNullException">handler == null</exception>
+    </member>
+    <member name="M:Ncqrs.Eventing.Sourcing.EventSource.HandleEvent(Ncqrs.Eventing.Sourcing.SourcedEvent)">
+      <requires description="The Event cannot be null." exception="T:System.ArgumentNullException">evnt != null</requires>
+      <exception cref="T:System.ArgumentNullException">evnt == null</exception>
+    </member>
+    <member name="M:Ncqrs.Eventing.Storage.InMemoryEventStore.GetAllEvents(System.Guid)">
+      <ensures description="Result should never be null." inheritedFrom="M:Ncqrs.Eventing.Storage.IEventStore.GetAllEvents(System.Guid)" inheritedFromTypeName="IEventStore">Contract.Result&lt;IEnumerable&lt;SourcedEvent&gt;&gt;() != null</ensures>
+    </member>
+    <member name="M:Ncqrs.Eventing.Storage.InMemoryEventStore.Save(Ncqrs.Eventing.Sourcing.IEventSource)">
+      <requires description="source cannot be null." inheritedFrom="M:Ncqrs.Eventing.Storage.IEventStore.Save(Ncqrs.Eventing.Sourcing.IEventSource)" inheritedFromTypeName="IEventStore" exception="T:System.ArgumentNullException">source != null</requires>
+      <exception cref="T:System.ArgumentNullException">source == null</exception>
+    </member>
+    <member name="M:Ncqrs.Eventing.Storage.SimpleEventTypeResolver.EventNameFor(System.Type)">
       <requires inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.EventNameFor(System.Type)" inheritedFromTypeName="IEventTypeResolver">type != null</requires>
       <ensures inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.EventNameFor(System.Type)" inheritedFromTypeName="IEventTypeResolver">Contract.Result&lt;string&gt;() != null</ensures>
     </member>
@@ -2679,16 +2674,13 @@
       <requires inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">eventName != null</requires>
       <ensures inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">Contract.Result&lt;Type&gt;() != null</ensures>
     </member>
-    <member name="M:Ncqrs.Eventing.Storage.SimpleEventTypeResolver.EventNameFor(System.Type)">
+    <member name="M:Ncqrs.Eventing.Storage.AttributeEventTypeResolver.EventNameFor(System.Type)">
       <requires inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.EventNameFor(System.Type)" inheritedFromTypeName="IEventTypeResolver">type != null</requires>
       <ensures inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.EventNameFor(System.Type)" inheritedFromTypeName="IEventTypeResolver">Contract.Result&lt;string&gt;() != null</ensures>
     </member>
-    <member name="M:Ncqrs.Eventing.Storage.InMemoryEventStore.Save(Ncqrs.Eventing.Sourcing.IEventSource)">
-      <requires description="source cannot be null." inheritedFrom="M:Ncqrs.Eventing.Storage.IEventStore.Save(Ncqrs.Eventing.Sourcing.IEventSource)" inheritedFromTypeName="IEventStore" exception="T:System.ArgumentNullException">source != null</requires>
-      <exception cref="T:System.ArgumentNullException">source == null</exception>
-    </member>
-    <member name="M:Ncqrs.Eventing.Storage.InMemoryEventStore.GetAllEvents(System.Guid)">
-      <ensures description="Result should never be null." inheritedFrom="M:Ncqrs.Eventing.Storage.IEventStore.GetAllEvents(System.Guid)" inheritedFromTypeName="IEventStore">Contract.Result&lt;IEnumerable&lt;SourcedEvent&gt;&gt;() != null</ensures>
+    <member name="M:Ncqrs.Eventing.Storage.AttributeEventTypeResolver.ResolveType(System.String)">
+      <requires inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">eventName != null</requires>
+      <ensures inheritedFrom="M:Ncqrs.Eventing.Storage.IEventTypeResolver.ResolveType(System.String)" inheritedFromTypeName="IEventTypeResolver">Contract.Result&lt;Type&gt;() != null</ensures>
     </member>
     <member name="M:Ncqrs.Eventing.Storage.Serialization.NullEventConverter.Upgrade(Ncqrs.Eventing.Storage.StoredEvent{Newtonsoft.Json.Linq.JObject})">
       <requires description="theEvent" inheritedFrom="M:Ncqrs.Eventing.Storage.Serialization.IEventConverter.Upgrade(Ncqrs.Eventing.Storage.StoredEvent{Newtonsoft.Json.Linq.JObject})" inheritedFromTypeName="IEventConverter" exception="T:System.ArgumentNullException">theEvent != null</requires>
@@ -2708,6 +2700,21 @@
       <requires exception="T:System.ArgumentOutOfRangeException">typeof(TCommand).IsAssignableFrom(commandType)</requires>
       <exception cref="T:System.ArgumentOutOfRangeException">!(typeof(TCommand).IsAssignableFrom(commandType))</exception>
     </member>
+    <member name="M:Ncqrs.Commanding.CommandExecution.CreatingCommandExecutor`2.#ctor(System.Func{`0,`1},Ncqrs.Domain.IUnitOfWorkFactory)">
+      <requires description="The action cannot be null." exception="T:System.ArgumentNullException">create != null</requires>
+      <exception cref="T:System.ArgumentNullException">create == null</exception>
+    </member>
+    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.Attributes.AttributeBasedMappingFactory.CreateExecutorForCommand``1">
+      <ensures>Contract.Result &lt;ICommandExecutor&lt;TCommand&gt;&gt;() != null</ensures>
+    </member>
+    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.PropertiesToMethodMapper.MakeSureAllPropertiesToMapOnNameHaveUniqueNames(System.Collections.Generic.List{Ncqrs.Commanding.CommandExecution.Mapping.PropertyToParameterMappingInfo})">
+      <requires exception="T:System.ArgumentNullException">propertiesToMap != null</requires>
+      <exception cref="T:System.ArgumentNullException">propertiesToMap == null</exception>
+    </member>
+    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.PropertiesToMethodMapper.MakeSureAllPropertieOrdinalsAreUnique(System.Collections.Generic.List{Ncqrs.Commanding.CommandExecution.Mapping.PropertyToParameterMappingInfo})">
+      <requires exception="T:System.ArgumentNullException">propertiesToMap != null</requires>
+      <exception cref="T:System.ArgumentNullException">propertiesToMap == null</exception>
+    </member>
     <member name="M:Ncqrs.Commanding.CommandExecution.DirectActionCommandExecutor`2.#ctor(System.Func{`0,System.Guid},System.Action{`1,`0},Ncqrs.Domain.IUnitOfWorkFactory)">
       <requires description="The getId parameter cannot be null." exception="T:System.ArgumentNullException">getId != null</requires>
       <exception cref="T:System.ArgumentNullException">getId == null</exception>
@@ -2721,21 +2728,6 @@
       <exception cref="T:System.ArgumentNullException">getId == null</exception>
       <requires description="The action parameter cannot be null." exception="T:System.ArgumentNullException">action != null</requires>
       <exception cref="T:System.ArgumentNullException">action == null</exception>
-    </member>
-    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.Attributes.AttributeBasedMappingFactory.CreateExecutorForCommand``1">
-      <ensures>Contract.Result &lt;ICommandExecutor&lt;TCommand&gt;&gt;() != null</ensures>
-    </member>
-    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.PropertiesToMethodMapper.MakeSureAllPropertiesToMapOnNameHaveUniqueNames(System.Collections.Generic.List{Ncqrs.Commanding.CommandExecution.Mapping.PropertyToParameterMappingInfo})">
-      <requires exception="T:System.ArgumentNullException">propertiesToMap != null</requires>
-      <exception cref="T:System.ArgumentNullException">propertiesToMap == null</exception>
-    </member>
-    <member name="M:Ncqrs.Commanding.CommandExecution.Mapping.PropertiesToMethodMapper.MakeSureAllPropertieOrdinalsAreUnique(System.Collections.Generic.List{Ncqrs.Commanding.CommandExecution.Mapping.PropertyToParameterMappingInfo})">
-      <requires exception="T:System.ArgumentNullException">propertiesToMap != null</requires>
-      <exception cref="T:System.ArgumentNullException">propertiesToMap == null</exception>
-    </member>
-    <member name="M:Ncqrs.Commanding.CommandExecution.CreatingCommandExecutor`2.#ctor(System.Func{`0,`1},Ncqrs.Domain.IUnitOfWorkFactory)">
-      <requires description="The action cannot be null." exception="T:System.ArgumentNullException">create != null</requires>
-      <exception cref="T:System.ArgumentNullException">create == null</exception>
     </member>
   </members>
 </doc>

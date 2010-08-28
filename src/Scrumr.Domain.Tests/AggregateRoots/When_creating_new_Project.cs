@@ -35,9 +35,13 @@ namespace Scrumr.Domain.Tests.AggregateRoots
         [Then]
         public void Then_project_id_and_name_should_be_published_as_given_at_construct()
         {
-            var evnt = (NewProjectCreated)PublishedEvents.First();
+            var evnt = PublishedEvents.First().As<NewProjectCreated>();
+            
             evnt.ProjectId.Should().Be(TheId);
+            
             evnt.Name.Should().Be(TheName);
+
+            evnt.ProductBacklogId.Should().NotBe(Guid.Empty);
         }
     }
 }
