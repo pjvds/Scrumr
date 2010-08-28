@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{37C398B2-9CA7-4922-AADC-634950955A62}</ProjectGuid>
+    <ProjectGuid>{FF0D5CDB-8580-4EED-BDA3-51754079FF48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scrumr.Commands</RootNamespace>
-    <AssemblyName>Scrumr.Commands</AssemblyName>
+    <RootNamespace>Scrumr.CommandExecutors</RootNamespace>
+    <AssemblyName>Scrumr.CommandExecutors</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -43,10 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddNewStoryToProductBacklog.cs" />
-    <Compile Include="ChangeProductBacklogStoryDescription.cs" />
-    <Compile Include="CreateNewProject.cs" />
+    <Compile Include="AddNewStoryToProductBacklogExecutor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scrumr.Commands\Scrumr.Commands.csproj">
+      <Project>{37C398B2-9CA7-4922-AADC-634950955A62}</Project>
+      <Name>Scrumr.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scrumr.Domain\Scrumr.Domain.csproj">
+      <Project>{689F126F-4E72-4F51-9BB2-448B623C6F00}</Project>
+      <Name>Scrumr.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

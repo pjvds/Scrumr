@@ -90,6 +90,10 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scrumr.CommandExecutors\Scrumr.CommandExecutors.csproj">
+      <Project>{FF0D5CDB-8580-4EED-BDA3-51754079FF48}</Project>
+      <Name>Scrumr.CommandExecutors</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scrumr.Commands\Scrumr.Commands.csproj">
       <Project>{37C398B2-9CA7-4922-AADC-634950955A62}</Project>
       <Name>Scrumr.Commands</Name>
