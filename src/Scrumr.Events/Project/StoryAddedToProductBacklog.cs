@@ -5,7 +5,7 @@ namespace Scrumr.Events.Project
 {
     public class StoryAddedToProductBacklog : SourcedEntityEvent
     {
-        public Guid Id { get; set; }
+        public Guid StoryId { get; set; }
         public string Description { get; set; }
 
         public StoryAddedToProductBacklog()
@@ -13,9 +13,9 @@ namespace Scrumr.Events.Project
             
         }
 
-        public StoryAddedToProductBacklog(Guid id, string description)
+        public StoryAddedToProductBacklog(Guid storyId, string description)
         {
-            Id = id;
+            StoryId = storyId;
             Description = description;
         }
     }

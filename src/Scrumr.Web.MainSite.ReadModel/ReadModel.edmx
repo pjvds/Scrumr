@@ -21,6 +21,16 @@
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReadModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="ReadModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ProjectModels" EntityType="ReadModel.ProjectModel" />
+          <EntitySet Name="ProductBacklogs" EntityType="ReadModel.ProductBacklog" />
+          <EntitySet Name="Stories" EntityType="ReadModel.Story" />
+          <AssociationSet Name="ProductBacklogStory" Association="ReadModel.ProductBacklogStory">
+            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
+            <End Role="Story" EntitySet="Stories" />
+          </AssociationSet>
+          <AssociationSet Name="ProjectModelProductBacklog" Association="ReadModel.ProjectModelProductBacklog">
+            <End Role="ProjectModel" EntitySet="ProjectModels" />
+            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProjectModel">
           <Key>
@@ -28,7 +38,33 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
           <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProjectModel" ToRole="ProductBacklog" />
         </EntityType>
+        <EntityType Name="ProductBacklog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="Stories" Relationship="ReadModel.ProductBacklogStory" FromRole="ProductBacklog" ToRole="Story" />
+          <NavigationProperty Name="ProjectModel" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProductBacklog" ToRole="ProjectModel" />
+        </EntityType>
+        <EntityType Name="Story">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="Description" Nullable="false" />
+          <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProductBacklogStory" FromRole="Story" ToRole="ProductBacklog" />
+        </EntityType>
+        <Association Name="ProductBacklogStory">
+          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
+          <End Type="ReadModel.Story" Role="Story" Multiplicity="*" />
+        </Association>
+        <Association Name="ProjectModelProductBacklog">
+          <End Type="ReadModel.ProjectModel" Role="ProjectModel" Multiplicity="1" />
+          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -63,6 +99,16 @@
     <edmx:Diagrams>
       <Diagram Name="ReadModel" >
         <EntityTypeShape EntityType="ReadModel.ProjectModel" Width="1.5" PointX="2" PointY="1.875" Height="1.4033821614583331" />
+        <EntityTypeShape EntityType="ReadModel.ProductBacklog" Width="1.5" PointX="4.75" PointY="1.375" Height="1.4033821614583331" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReadModel.Story" Width="1.5" PointX="7.625" PointY="1" Height="1.4033821614583331" />
+        <AssociationConnector Association="ReadModel.ProductBacklogStory">
+          <ConnectorPoint PointX="6.25" PointY="1.985341796875" />
+          <ConnectorPoint PointX="7.625" PointY="1.985341796875" />
+        </AssociationConnector>
+        <AssociationConnector Association="ReadModel.ProjectModelProductBacklog">
+          <ConnectorPoint PointX="3.5" PointY="2.5189925130208328" />
+          <ConnectorPoint PointX="4.75" PointY="2.5189925130208328" />
+        </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

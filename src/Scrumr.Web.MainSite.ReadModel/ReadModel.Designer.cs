@@ -16,6 +16,12 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("ReadModel", "ProductBacklogStory", "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklog), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Story))]
+[assembly: EdmRelationshipAttribute("ReadModel", "ProjectModelProductBacklog", "ProjectModel", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProjectModel), "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklog))]
+
+#endregion
 
 namespace Scrumr.Web.MainSite.ReadModel
 {
@@ -80,6 +86,38 @@ namespace Scrumr.Web.MainSite.ReadModel
             }
         }
         private ObjectSet<ProjectModel> _ProjectModels;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<ProductBacklog> ProductBacklogs
+        {
+            get
+            {
+                if ((_ProductBacklogs == null))
+                {
+                    _ProductBacklogs = base.CreateObjectSet<ProductBacklog>("ProductBacklogs");
+                }
+                return _ProductBacklogs;
+            }
+        }
+        private ObjectSet<ProductBacklog> _ProductBacklogs;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Story> Stories
+        {
+            get
+            {
+                if ((_Stories == null))
+                {
+                    _Stories = base.CreateObjectSet<Story>("Stories");
+                }
+                return _Stories;
+            }
+        }
+        private ObjectSet<Story> _Stories;
 
         #endregion
         #region AddTo Methods
@@ -91,6 +129,22 @@ namespace Scrumr.Web.MainSite.ReadModel
         {
             base.AddObject("ProjectModels", projectModel);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the ProductBacklogs EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToProductBacklogs(ProductBacklog productBacklog)
+        {
+            base.AddObject("ProductBacklogs", productBacklog);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Stories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToStories(Story story)
+        {
+            base.AddObject("Stories", story);
+        }
 
         #endregion
     }
@@ -99,6 +153,150 @@ namespace Scrumr.Web.MainSite.ReadModel
     #endregion
     
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="ProductBacklog")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class ProductBacklog : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new ProductBacklog object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static ProductBacklog CreateProductBacklog(global::System.Guid id, global::System.String name)
+        {
+            ProductBacklog productBacklog = new ProductBacklog();
+            productBacklog.Id = id;
+            productBacklog.Name = name;
+            return productBacklog;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProductBacklogStory", "Story")]
+        public EntityCollection<Story> Stories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Story>("ReadModel.ProductBacklogStory", "Story");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Story>("ReadModel.ProductBacklogStory", "Story", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProjectModelProductBacklog", "ProjectModel")]
+        public ProjectModel ProjectModel
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelProductBacklog", "ProjectModel").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelProductBacklog", "ProjectModel").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ProjectModel> ProjectModelReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelProductBacklog", "ProjectModel");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProjectModel>("ReadModel.ProjectModelProductBacklog", "ProjectModel", value);
+                }
+            }
+        }
+
+        #endregion
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -179,6 +377,169 @@ namespace Scrumr.Web.MainSite.ReadModel
 
         #endregion
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProjectModelProductBacklog", "ProductBacklog")]
+        public ProductBacklog ProductBacklog
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ProductBacklog> ProductBacklogReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Story")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Story : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Story object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        public static Story CreateStory(global::System.Guid id, global::System.String description)
+        {
+            Story story = new Story();
+            story.Id = id;
+            story.Description = description;
+            return story;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProductBacklogStory", "ProductBacklog")]
+        public ProductBacklog ProductBacklog
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<ProductBacklog> ProductBacklogReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog", value);
+                }
+            }
+        }
+
+        #endregion
     }
 
     #endregion

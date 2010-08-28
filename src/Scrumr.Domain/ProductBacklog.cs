@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Collections.Generic;
 using Ncqrs.Domain;
-using Ncqrs.Eventing.Sourcing;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain
@@ -17,9 +16,9 @@ namespace Scrumr.Domain
             _name = name;
         }
 
-        public void AddStory(string description)
+        public void AddStory(Guid storyId, String description)
         {
-            var e = new StoryAddedToProductBacklog(Guid.NewGuid(), description);
+            var e = new StoryAddedToProductBacklog(storyId, description);
             ApplyEvent(e);
         }
 
@@ -43,7 +42,7 @@ namespace Scrumr.Domain
         private void OnStoryAdded(StoryAddedToProductBacklog e)
         {
             // TODO: Determine what to do with entities that have a entity as parent
-            // _stories.Add(new Story());
+            _stories.Add(new Story(this.ParentAggregateRoot, e.StoryId, e.Description));
         }
 
         private void OnStoryRemoved(StoryRemovedFromProductBacklog e)
