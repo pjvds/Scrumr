@@ -18,8 +18,8 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("ReadModel", "ProductBacklogStory", "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklog), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Story))]
-[assembly: EdmRelationshipAttribute("ReadModel", "ProjectModelProductBacklog", "ProjectModel", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProjectModel), "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklog))]
+[assembly: EdmRelationshipAttribute("ReadModel", "ProductBacklogStory", "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklogModel), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.StoryModel))]
+[assembly: EdmRelationshipAttribute("ReadModel", "ProjectModelProductBacklog", "ProjectModel", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProjectModel), "ProductBacklog", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProductBacklogModel))]
 
 #endregion
 
@@ -90,34 +90,34 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<ProductBacklog> ProductBacklogs
+        public ObjectSet<ProductBacklogModel> ProductBacklogModels
         {
             get
             {
-                if ((_ProductBacklogs == null))
+                if ((_ProductBacklogModels == null))
                 {
-                    _ProductBacklogs = base.CreateObjectSet<ProductBacklog>("ProductBacklogs");
+                    _ProductBacklogModels = base.CreateObjectSet<ProductBacklogModel>("ProductBacklogModels");
                 }
-                return _ProductBacklogs;
+                return _ProductBacklogModels;
             }
         }
-        private ObjectSet<ProductBacklog> _ProductBacklogs;
+        private ObjectSet<ProductBacklogModel> _ProductBacklogModels;
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Story> Stories
+        public ObjectSet<StoryModel> StoryModels
         {
             get
             {
-                if ((_Stories == null))
+                if ((_StoryModels == null))
                 {
-                    _Stories = base.CreateObjectSet<Story>("Stories");
+                    _StoryModels = base.CreateObjectSet<StoryModel>("StoryModels");
                 }
-                return _Stories;
+                return _StoryModels;
             }
         }
-        private ObjectSet<Story> _Stories;
+        private ObjectSet<StoryModel> _StoryModels;
 
         #endregion
         #region AddTo Methods
@@ -131,19 +131,19 @@ namespace Scrumr.Web.MainSite.ReadModel
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the ProductBacklogs EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the ProductBacklogModels EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToProductBacklogs(ProductBacklog productBacklog)
+        public void AddToProductBacklogModels(ProductBacklogModel productBacklogModel)
         {
-            base.AddObject("ProductBacklogs", productBacklog);
+            base.AddObject("ProductBacklogModels", productBacklogModel);
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Stories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the StoryModels EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToStories(Story story)
+        public void AddToStoryModels(StoryModel storyModel)
         {
-            base.AddObject("Stories", story);
+            base.AddObject("StoryModels", storyModel);
         }
 
         #endregion
@@ -157,24 +157,24 @@ namespace Scrumr.Web.MainSite.ReadModel
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="ProductBacklog")]
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="ProductBacklogModel")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class ProductBacklog : EntityObject
+    public partial class ProductBacklogModel : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new ProductBacklog object.
+        /// Create a new ProductBacklogModel object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static ProductBacklog CreateProductBacklog(global::System.Guid id, global::System.String name)
+        public static ProductBacklogModel CreateProductBacklogModel(global::System.Guid id, global::System.String name)
         {
-            ProductBacklog productBacklog = new ProductBacklog();
-            productBacklog.Id = id;
-            productBacklog.Name = name;
-            return productBacklog;
+            ProductBacklogModel productBacklogModel = new ProductBacklogModel();
+            productBacklogModel.Id = id;
+            productBacklogModel.Name = name;
+            return productBacklogModel;
         }
 
         #endregion
@@ -242,17 +242,17 @@ namespace Scrumr.Web.MainSite.ReadModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProductBacklogStory", "Story")]
-        public EntityCollection<Story> Stories
+        public EntityCollection<StoryModel> Stories
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Story>("ReadModel.ProductBacklogStory", "Story");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StoryModel>("ReadModel.ProductBacklogStory", "Story");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Story>("ReadModel.ProductBacklogStory", "Story", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StoryModel>("ReadModel.ProductBacklogStory", "Story", value);
                 }
             }
         }
@@ -386,15 +386,15 @@ namespace Scrumr.Web.MainSite.ReadModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProjectModelProductBacklog", "ProductBacklog")]
-        public ProductBacklog ProductBacklog
+        public ProductBacklogModel ProductBacklog
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProjectModelProductBacklog", "ProductBacklog").Value = value;
             }
         }
         /// <summary>
@@ -402,17 +402,17 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<ProductBacklog> ProductBacklogReference
+        public EntityReference<ProductBacklogModel> ProductBacklogReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProjectModelProductBacklog", "ProductBacklog");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklog>("ReadModel.ProjectModelProductBacklog", "ProductBacklog", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklogModel>("ReadModel.ProjectModelProductBacklog", "ProductBacklog", value);
                 }
             }
         }
@@ -423,24 +423,24 @@ namespace Scrumr.Web.MainSite.ReadModel
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Story")]
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="StoryModel")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Story : EntityObject
+    public partial class StoryModel : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Story object.
+        /// Create a new StoryModel object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="description">Initial value of the Description property.</param>
-        public static Story CreateStory(global::System.Guid id, global::System.String description)
+        public static StoryModel CreateStoryModel(global::System.Guid id, global::System.String description)
         {
-            Story story = new Story();
-            story.Id = id;
-            story.Description = description;
-            return story;
+            StoryModel storyModel = new StoryModel();
+            storyModel.Id = id;
+            storyModel.Description = description;
+            return storyModel;
         }
 
         #endregion
@@ -508,15 +508,15 @@ namespace Scrumr.Web.MainSite.ReadModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProductBacklogStory", "ProductBacklog")]
-        public ProductBacklog ProductBacklog
+        public ProductBacklogModel ProductBacklog
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProductBacklogStory", "ProductBacklog").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProductBacklogStory", "ProductBacklog").Value = value;
             }
         }
         /// <summary>
@@ -524,17 +524,17 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<ProductBacklog> ProductBacklogReference
+        public EntityReference<ProductBacklogModel> ProductBacklogReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProductBacklogModel>("ReadModel.ProductBacklogStory", "ProductBacklog");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklog>("ReadModel.ProductBacklogStory", "ProductBacklog", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProductBacklogModel>("ReadModel.ProductBacklogStory", "ProductBacklog", value);
                 }
             }
         }

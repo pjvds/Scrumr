@@ -7,29 +7,79 @@
     <Schema Namespace="ReadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="ReadModelStoreContainer">
     <EntitySet Name="ProjectModels" EntityType="ReadModel.Store.ProjectModels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProductBacklogModels" EntityType="ReadModel.Store.ProductBacklogModels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StoryModels" EntityType="ReadModel.Store.StoryModels" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ProductBacklogStory" Association="ReadModel.Store.ProductBacklogStory">
+      <End Role="ProductBacklog" EntitySet="ProductBacklogModels" />
+      <End Role="Story" EntitySet="StoryModels" />
+    </AssociationSet>
+    <AssociationSet Name="ProjectModelProductBacklog" Association="ReadModel.Store.ProjectModelProductBacklog">
+      <End Role="ProjectModel" EntitySet="ProjectModels" />
+      <End Role="ProductBacklog" EntitySet="ProductBacklogModels" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ProjectModels">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Computed" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProductBacklog_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProductBacklogModels">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="StoryModels">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProductBacklog_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <Association Name="ProductBacklogStory">
+    <End Role="ProductBacklog" Type="ReadModel.Store.ProductBacklogModels" Multiplicity="1" />
+    <End Role="Story" Type="ReadModel.Store.StoryModels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProductBacklog">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Story">
+        <PropertyRef Name="ProductBacklog_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProjectModelProductBacklog">
+    <End Role="ProjectModel" Type="ReadModel.Store.ProjectModels" Multiplicity="*" />
+    <End Role="ProductBacklog" Type="ReadModel.Store.ProductBacklogModels" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="ProductBacklog">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ProjectModel">
+        <PropertyRef Name="ProductBacklog_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReadModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="ReadModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ProjectModels" EntityType="ReadModel.ProjectModel" />
-          <EntitySet Name="ProductBacklogs" EntityType="ReadModel.ProductBacklog" />
-          <EntitySet Name="Stories" EntityType="ReadModel.Story" />
+          <EntitySet Name="ProductBacklogModels" EntityType="ReadModel.ProductBacklogModel" />
+          <EntitySet Name="StoryModels" EntityType="ReadModel.StoryModel" />
           <AssociationSet Name="ProductBacklogStory" Association="ReadModel.ProductBacklogStory">
-            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
-            <End Role="Story" EntitySet="Stories" />
+            <End Role="ProductBacklog" EntitySet="ProductBacklogModels" />
+            <End Role="Story" EntitySet="StoryModels" />
           </AssociationSet>
           <AssociationSet Name="ProjectModelProductBacklog" Association="ReadModel.ProjectModelProductBacklog">
             <End Role="ProjectModel" EntitySet="ProjectModels" />
-            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
+            <End Role="ProductBacklog" EntitySet="ProductBacklogModels" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="ProjectModel">
@@ -40,7 +90,7 @@
           <Property Type="String" Name="Name" Nullable="false" />
           <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProjectModel" ToRole="ProductBacklog" />
         </EntityType>
-        <EntityType Name="ProductBacklog">
+        <EntityType Name="ProductBacklogModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -49,7 +99,7 @@
           <NavigationProperty Name="Stories" Relationship="ReadModel.ProductBacklogStory" FromRole="ProductBacklog" ToRole="Story" />
           <NavigationProperty Name="ProjectModel" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProductBacklog" ToRole="ProjectModel" />
         </EntityType>
-        <EntityType Name="Story">
+        <EntityType Name="StoryModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -58,12 +108,12 @@
           <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProductBacklogStory" FromRole="Story" ToRole="ProductBacklog" />
         </EntityType>
         <Association Name="ProductBacklogStory">
-          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
-          <End Type="ReadModel.Story" Role="Story" Multiplicity="*" />
+          <End Type="ReadModel.ProductBacklogModel" Role="ProductBacklog" Multiplicity="1" />
+          <End Type="ReadModel.StoryModel" Role="Story" Multiplicity="*" />
         </Association>
         <Association Name="ProjectModelProductBacklog">
           <End Type="ReadModel.ProjectModel" Role="ProjectModel" Multiplicity="1" />
-          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
+          <End Type="ReadModel.ProductBacklogModel" Role="ProductBacklog" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -79,6 +129,38 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ProductBacklogModels">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.ProductBacklogModel)">
+        <MappingFragment StoreEntitySet="ProductBacklogModels">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="StoryModels">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.StoryModel)">
+        <MappingFragment StoreEntitySet="StoryModels">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ProductBacklogStory" TypeName="ReadModel.ProductBacklogStory" StoreEntitySet="StoryModels">
+      <EndProperty Name="ProductBacklog">
+        <ScalarProperty Name="Id" ColumnName="ProductBacklog_Id" />
+      </EndProperty>
+      <EndProperty Name="Story">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ProjectModelProductBacklog" TypeName="ReadModel.ProjectModelProductBacklog" StoreEntitySet="ProjectModels">
+      <EndProperty Name="ProductBacklog">
+        <ScalarProperty Name="Id" ColumnName="ProductBacklog_Id" />
+      </EndProperty>
+      <EndProperty Name="ProjectModel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -99,8 +181,8 @@
     <edmx:Diagrams>
       <Diagram Name="ReadModel" >
         <EntityTypeShape EntityType="ReadModel.ProjectModel" Width="1.5" PointX="2" PointY="1.875" Height="1.4033821614583331" />
-        <EntityTypeShape EntityType="ReadModel.ProductBacklog" Width="1.5" PointX="4.75" PointY="1.375" Height="1.4033821614583331" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadModel.Story" Width="1.5" PointX="7.625" PointY="1" Height="1.4033821614583331" />
+        <EntityTypeShape EntityType="ReadModel.ProductBacklogModel" Width="1.5" PointX="4.75" PointY="1.375" Height="1.4033821614583331" IsExpanded="true" />
+        <EntityTypeShape EntityType="ReadModel.StoryModel" Width="1.5" PointX="7.625" PointY="1" Height="1.4033821614583331" />
         <AssociationConnector Association="ReadModel.ProductBacklogStory">
           <ConnectorPoint PointX="6.25" PointY="1.985341796875" />
           <ConnectorPoint PointX="7.625" PointY="1.985341796875" />
