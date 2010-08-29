@@ -5,6 +5,7 @@ namespace Scrumr.Events.Project
 {
     public class StoryRemovedFromProductBacklog : SourcedEntityEvent
     {
+        public Guid ProjectId { get { return EventSourceId; } }
         public Guid ProductBacklogId { get { return EntityId; }}
         public Guid StoryId { get; set; }
 
