@@ -10,6 +10,7 @@
         google.load("jquery", "1"); 
         google.load("jqueryui", "1");
     </script>
+    <asp:ContentPlaceHolder ID="headContent" runat="server" />
 </head>
 
 <body>

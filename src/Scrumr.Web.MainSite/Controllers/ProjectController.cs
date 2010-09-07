@@ -38,5 +38,10 @@ namespace Scrumr.Web.MainSite.Controllers
         {
             return RedirectToAction("Details", new {command.ProductId});
         }
+
+        public ActionResult ScrumBoard()
+        {
+            return View("ScrumBoard");
+        }
     }
 }
