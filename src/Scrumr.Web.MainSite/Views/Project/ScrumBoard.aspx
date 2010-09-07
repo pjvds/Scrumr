@@ -12,20 +12,25 @@
     <div>
 		<ul id="stories" class="stories ui-helper-reset ui-helper-clearfix">
 			<li class="ui-widget-content ui-corner-tr">
-				<h5 class="ui-widget-header">High Tatras</h5>
+				<h5 class="ui-widget-header">Story 1</h5>
 			</li>
 			<li class="ui-widget-content ui-corner-tr">
-				<h5 class="ui-widget-header">High Tatras 2</h5>
+				<h5 class="ui-widget-header">Story 2</h5>
 			</li>
 			<li class="ui-widget-content ui-corner-tr">
-				<h5 class="ui-widget-header">High Tatras 3</h5>
+				<h5 class="ui-widget-header">Story 3</h5>
 			</li>
 			<li class="ui-widget-content ui-corner-tr">
-				<h5 class="ui-widget-header">High Tatras 4</h5>
+				<h5 class="ui-widget-header">Story 4</h5>
 			</li>
 		</ul>
-		<div id="todo" class="ui-widget-content ui-state-default">
-			<h4 class="ui-widget-header"><span class="ui-icon ui-icon-trash">To Do</span> To Do</h4>
-		</div>
+        <ul id="stages" class="ui-widget-content ui-state-default">
+            <li class="ui-widget-header">
+				<p>To Do</p>
+			</li>
+             <li class="ui-widget-header">
+				<p>In Progress</p>
+			</li>
+        </ul>
 	</div>
 </asp:Content>
