@@ -7,7 +7,7 @@
     <script type="text/javascript" src="../../Scripts/ScrumBoard.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <table>
+    <table id="board">
         <thead>
             <tr>
                 <th>
@@ -37,19 +37,17 @@
                        var tasks = story.Tasks.Where(t => t.Stage == stage);
 
                 %>
-                <td>
-                    <ul>
-                        <%
-                            foreach (var task in tasks)
-                            {
-                        %>
-                        <li>
-                            <%: task.Description%>
-                        </li>
-                        <%      
-                            }
-                        %>
-                    </ul>
+                <td class="storystage">
+                    <%
+                        foreach (var task in tasks)
+                        {
+                    %>
+                    <div class="task">
+                        <%: task.Description%>
+                    </div>
+                    <%      
+                        }
+                    %>
                 </td>
                 <%
                     } 
