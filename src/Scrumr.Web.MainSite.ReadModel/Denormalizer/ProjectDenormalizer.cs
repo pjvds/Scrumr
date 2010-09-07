@@ -32,8 +32,10 @@ namespace Scrumr.Web.MainSite.ReadModel.Denormalizer
                 {
                     Id = evnt.StoryId,
                     Description = evnt.Description,
-                    ProductBacklog = context.ProductBacklogModels.Single(p => p.Id == evnt.EventSourceId)
                 };
+
+                var project = context.ProjectModels.Single(p => p.Id == evnt.ProjectId);
+                project.ProductBacklogStoryModels.Add(newModel);
 
                 context.AddToStoryModels(newModel);
                 context.SaveChanges();
