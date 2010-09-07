@@ -42,7 +42,7 @@
     function restoreTask($item) {
         $item.fadeOut(function () {
             $item.find('a.ui-icon-refresh').remove();
-            $item.css('width', '96px').append(trash_icon).find('img').css('height', '72px').end().appendTo($stories).fadeIn();
+            $item.css('width', '96px').appendTo($stories).fadeIn();
         });
     }
 });
