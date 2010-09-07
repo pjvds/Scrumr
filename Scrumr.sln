@@ -1,6 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Web.MainSite", "src\Scrumr.Web.MainSite\Scrumr.Web.MainSite.csproj", "{B89149FB-ECEE-4E06-BDF4-D32D15F8D847}"
+	ProjectSection(ProjectDependencies) = postProject
+		{20A6128D-70EA-456D-AA46-D1762F99F97C} = {20A6128D-70EA-456D-AA46-D1762F99F97C}
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Domain", "src\Scrumr.Domain\Scrumr.Domain.csproj", "{689F126F-4E72-4F51-9BB2-448B623C6F00}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Events", "src\Scrumr.Events\Scrumr.Events.csproj", "{988F4FD0-B03C-4886-8795-AF1F2B649676}"
@@ -8,11 +13,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Domain.Tests", "src\Scrumr.Domain.Tests\Scrumr.Domain.Tests.csproj", "{55E6517E-1FB9-481D-8BFA-68A133570295}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Commands", "src\Scrumr.Commands\Scrumr.Commands.csproj", "{37C398B2-9CA7-4922-AADC-634950955A62}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.Web.MainSite", "src\Scrumr.Web.MainSite\Scrumr.Web.MainSite.csproj", "{B89149FB-ECEE-4E06-BDF4-D32D15F8D847}"
-	ProjectSection(ProjectDependencies) = postProject
-		{20A6128D-70EA-456D-AA46-D1762F99F97C} = {20A6128D-70EA-456D-AA46-D1762F99F97C}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scrumr.CommandService", "src\Scrumr.CommandService\Scrumr.CommandService.csproj", "{20A6128D-70EA-456D-AA46-D1762F99F97C}"
 EndProject

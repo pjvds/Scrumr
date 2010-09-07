@@ -11,6 +11,11 @@ namespace Scrumr.Domain
         private string _name;
         private List<Story> _stories = new List<Story>();
 
+        public IEnumerable<Story> Stories
+        {
+            get { return _stories; }
+        }
+
         public ProductBacklog(Project parent, Guid entityId, string name) : base(parent, entityId)
         {
             _name = name;

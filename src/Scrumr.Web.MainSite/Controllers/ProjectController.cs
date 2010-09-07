@@ -28,13 +28,15 @@ namespace Scrumr.Web.MainSite.Controllers
             return RedirectToAction("Details", new {cmd.ProjectId});
         }
 
-        public ActionResult Details(Guid projectId)
+        public ActionResult AddNewStory(Guid productId)
         {
-            using(var context = new ReadModelContainer())
-            {
-                var model = context.ProjectModels.Single(p => p.Id == projectId);
-                return View(model);
-            }
+            return Json(new AddNewStoryToProductBacklog {ProductId = productId, StoryId = Guid.NewGuid()});
+        }
+
+        [HttpPost]
+        public ActionResult AddNewStory(AddNewStoryToProductBacklog command)
+        {
+            return RedirectToAction("Details", new {command.ProductId});
         }
     }
 }

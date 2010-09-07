@@ -107,8 +107,10 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Project\AddNewStoryToProductBacklogControl.ascx" />
     <Content Include="Views\Project\Create.aspx" />
     <Content Include="Views\Project\Details.aspx" />
+    <Content Include="Views\Story\AddToProductBacklog.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

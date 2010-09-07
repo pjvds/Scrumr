@@ -7,65 +7,72 @@
     <Schema Namespace="ReadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="ReadModelStoreContainer">
     <EntitySet Name="ProjectModels" EntityType="ReadModel.Store.ProjectModels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="StoryModels" EntityType="ReadModel.Store.StoryModels" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="ProjectModelStoryModel" Association="ReadModel.Store.ProjectModelStoryModel">
+      <End Role="ProjectModel" EntitySet="ProjectModels" />
+      <End Role="StoryModel" EntitySet="StoryModels" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ProjectModels">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
+  <EntityType Name="StoryModels">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProjectModel_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <Association Name="ProjectModelStoryModel">
+    <End Role="ProjectModel" Type="ReadModel.Store.ProjectModels" Multiplicity="1" />
+    <End Role="StoryModel" Type="ReadModel.Store.StoryModels" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProjectModel">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="StoryModel">
+        <PropertyRef Name="ProjectModel_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReadModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="ReadModelContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ProjectModels" EntityType="ReadModel.ProjectModel" />
-          <EntitySet Name="ProductBacklogs" EntityType="ReadModel.ProductBacklog" />
-          <EntitySet Name="Stories" EntityType="ReadModel.Story" />
-          <AssociationSet Name="ProductBacklogStory" Association="ReadModel.ProductBacklogStory">
-            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
-            <End Role="Story" EntitySet="Stories" />
-          </AssociationSet>
-          <AssociationSet Name="ProjectModelProductBacklog" Association="ReadModel.ProjectModelProductBacklog">
+          <EntitySet Name="StoryModels" EntityType="ReadModel.StoryModel" />
+          <AssociationSet Name="ProjectModelStoryModel" Association="ReadModel.ProjectModelStoryModel">
             <End Role="ProjectModel" EntitySet="ProjectModels" />
-            <End Role="ProductBacklog" EntitySet="ProductBacklogs" />
+            <End Role="StoryModel" EntitySet="StoryModels" />
           </AssociationSet>
-        </EntityContainer>
+          </EntityContainer>
         <EntityType Name="ProjectModel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Computed" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProjectModel" ToRole="ProductBacklog" />
-        </EntityType>
-        <EntityType Name="ProductBacklog">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="Stories" Relationship="ReadModel.ProductBacklogStory" FromRole="ProductBacklog" ToRole="Story" />
-          <NavigationProperty Name="ProjectModel" Relationship="ReadModel.ProjectModelProductBacklog" FromRole="ProductBacklog" ToRole="ProjectModel" />
+          <NavigationProperty Name="ProductBacklogStoryModels" Relationship="ReadModel.ProjectModelStoryModel" FromRole="ProjectModel" ToRole="StoryModel" />
         </EntityType>
-        <EntityType Name="Story">
+        <EntityType Name="StoryModel">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Type="String" Name="Description" Nullable="false" />
-          <NavigationProperty Name="ProductBacklog" Relationship="ReadModel.ProductBacklogStory" FromRole="Story" ToRole="ProductBacklog" />
+          <NavigationProperty Name="ProjectModel" Relationship="ReadModel.ProjectModelStoryModel" FromRole="StoryModel" ToRole="ProjectModel" />
         </EntityType>
-        <Association Name="ProductBacklogStory">
-          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
-          <End Type="ReadModel.Story" Role="Story" Multiplicity="*" />
-        </Association>
-        <Association Name="ProjectModelProductBacklog">
+        <Association Name="ProjectModelStoryModel">
           <End Type="ReadModel.ProjectModel" Role="ProjectModel" Multiplicity="1" />
-          <End Type="ReadModel.ProductBacklog" Role="ProductBacklog" Multiplicity="1" />
+          <End Type="ReadModel.StoryModel" Role="StoryModel" Multiplicity="*" />
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -79,6 +86,22 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="StoryModels">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.StoryModel)">
+        <MappingFragment StoreEntitySet="StoryModels">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ProjectModelStoryModel" TypeName="ReadModel.ProjectModelStoryModel" StoreEntitySet="StoryModels">
+      <EndProperty Name="ProjectModel">
+        <ScalarProperty Name="Id" ColumnName="ProjectModel_Id" />
+      </EndProperty>
+      <EndProperty Name="StoryModel">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
@@ -99,15 +122,10 @@
     <edmx:Diagrams>
       <Diagram Name="ReadModel" >
         <EntityTypeShape EntityType="ReadModel.ProjectModel" Width="1.5" PointX="2" PointY="1.875" Height="1.4033821614583331" />
-        <EntityTypeShape EntityType="ReadModel.ProductBacklog" Width="1.5" PointX="4.75" PointY="1.375" Height="1.4033821614583331" IsExpanded="true" />
-        <EntityTypeShape EntityType="ReadModel.Story" Width="1.5" PointX="7.625" PointY="1" Height="1.4033821614583331" />
-        <AssociationConnector Association="ReadModel.ProductBacklogStory">
-          <ConnectorPoint PointX="6.25" PointY="1.985341796875" />
-          <ConnectorPoint PointX="7.625" PointY="1.985341796875" />
-        </AssociationConnector>
-        <AssociationConnector Association="ReadModel.ProjectModelProductBacklog">
-          <ConnectorPoint PointX="3.5" PointY="2.5189925130208328" />
-          <ConnectorPoint PointX="4.75" PointY="2.5189925130208328" />
+        <EntityTypeShape EntityType="ReadModel.StoryModel" Width="1.5" PointX="5.875" PointY="0.875" Height="1.4033821614583331" />
+        <AssociationConnector Association="ReadModel.ProjectModelStoryModel">
+          <ConnectorPoint PointX="3.5" PointY="2.172841796875" />
+          <ConnectorPoint PointX="5.875" PointY="2.172841796875" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>

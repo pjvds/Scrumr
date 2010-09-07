@@ -20,11 +20,9 @@ namespace Scrumr.Domain
         {
         }
 
-        public Project(Guid id, string name) : this()
+        public Project(Guid id, string name) : base(id)
         {
             ValidateName(name);
-
-            EventSourceId = id;
 
             var productBacklogId = Guid.NewGuid(); // TODO: maybe we need to add an GenerateEntityId method to the agg root class that uses the generator from the environment.
 
@@ -70,7 +68,6 @@ namespace Scrumr.Domain
 
         private void OnProjectCreated(NewProjectCreated e)
         {
-            EventSourceId = e.ProjectId;
             _productBacklog = new ProductBacklog(this, e.ProjectId, "Product backlog");
             _name = e.Name;
         }
