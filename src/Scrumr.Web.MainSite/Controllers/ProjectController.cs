@@ -44,5 +44,12 @@ namespace Scrumr.Web.MainSite.Controllers
         {
             return View(Models.ScrumBoard.GetSample());
         }
+
+        [HttpPost]
+        public void MoveTask(MoveTaskToStage cmd)
+        {
+            var service = new ScrumrCommandServiceClient();
+            service.ExecuteCommand(cmd);
+        }
     }
 }

@@ -23,5 +23,6 @@
         $item.fadeOut(function () {
             $item.appendTo($target).show();
         });
+        $.post('/Project/MoveTask', { ProjectId: "00000000-0000-0000-0000-000000000001", TaskId: "00000000-0000-0000-0000-000000000002", StageId: "00000000-0000-0000-0000-000000000003" });
     }
 });
