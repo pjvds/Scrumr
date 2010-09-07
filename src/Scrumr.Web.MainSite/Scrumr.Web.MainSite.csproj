@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="Models\ScrumBoard.cs" />
     <Compile Include="Models\Stage.cs" />
+    <Compile Include="Models\Story.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\Commanding\Reference.cs">

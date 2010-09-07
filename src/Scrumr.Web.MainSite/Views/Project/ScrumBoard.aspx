@@ -13,7 +13,7 @@
                 <th>
                     Stories
                 </th>
-                <% foreach (Scrumr.Web.MainSite.Models.Stage stage in Model.Stages)
+                <% foreach (var stage in Model.Stages)
                    {
                 %>
                 <th>
@@ -25,6 +25,39 @@
             </tr>
         </thead>
         <tbody>
+            <% foreach (var story in Model.Stories)
+               {
+            %>
+            <tr>
+                <td>
+                    <%: story.Name %>
+                </td>
+                <% foreach (var stage in Model.Stages)
+                   {
+                       var tasks = story.Tasks.Where(t => t.Stage == stage);
+
+                %>
+                <td>
+                    <ul>
+                        <%
+                            foreach (var task in tasks)
+                            {
+                        %>
+                        <li>
+                            <%: task.Description%>
+                        </li>
+                        <%      
+                            }
+                        %>
+                    </ul>
+                </td>
+                <%
+                    } 
+                %>
+            </tr>
+            <%      
+                } 
+            %>
         </tbody>
     </table>
     <ul id="stories" class="ui-widget-content ui-state-default">
