@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using Scrumr.Commands;
 using Scrumr.Web.MainSite.Commanding;
 using Scrumr.Web.MainSite.ReadModel;
-using Scrumr.Web.MainSite.Models;
 
 namespace Scrumr.Web.MainSite.Controllers
 {
@@ -42,7 +41,7 @@ namespace Scrumr.Web.MainSite.Controllers
 
         public ActionResult ScrumBoard()
         {
-            return View(Models.ScrumBoard.GetSample());
+            return View();
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Scrumr.Web.MainSite.Models.ScrumBoard>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<Scrumr.Web.MainSite.ReadModel.Scrumboard>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     ScrumBoard
@@ -30,11 +30,11 @@
             %>
             <tr>
                 <td>
-                    <%: story.Name %>
+                    <%: story.Description %>
                 </td>
                 <% foreach (var stage in Model.Stages)
                    {
-                       var tasks = story.Tasks.Where(t => t.Stage == stage);
+                       var tasks = story.Tasks.Where(t => t.Stage.Id == stage.Id);
 
                 %>
                 <td class="storystage">

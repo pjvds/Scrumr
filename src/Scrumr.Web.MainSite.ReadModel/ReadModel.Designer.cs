@@ -989,7 +989,7 @@ namespace Scrumr.Web.MainSite.ReadModel
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ReadModel", "TaskStage", "Stage")]
-        public Stage Stages
+        public Stage Stage
         {
             get
             {
@@ -1005,7 +1005,7 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Stage> StagesReference
+        public EntityReference<Stage> StageReference
         {
             get
             {

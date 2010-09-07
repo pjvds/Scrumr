@@ -214,7 +214,7 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Story" Relationship="ReadModel.StoryTask" FromRole="Task" ToRole="Story" />
-          <NavigationProperty Name="Stages" Relationship="ReadModel.TaskStage" FromRole="Task" ToRole="Stage" />
+          <NavigationProperty Name="Stage" Relationship="ReadModel.TaskStage" FromRole="Task" ToRole="Stage" />
           <Property Type="String" Name="Description" Nullable="false" />
         </EntityType>
         <EntityType Name="Stage">
