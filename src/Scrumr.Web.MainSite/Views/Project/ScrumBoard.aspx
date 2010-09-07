@@ -58,34 +58,5 @@
             %>
         </tbody>
     </table>
-    <ul id="stories" class="ui-widget-content ui-state-default">
-        <%--<h5 class="ui-widget-header">Stories</h5>--%>
-        <li class="ui-widget-content ui-corner-tr">
-            <h5 class="ui-widget-header">
-                Task 1</h5>
-        </li>
-        <li class="ui-widget-content ui-corner-tr">
-            <h5 class="ui-widget-header">
-                Task 2</h5>
-        </li>
-        <li class="ui-widget-content ui-corner-tr">
-            <h5 class="ui-widget-header">
-                Task 3</h5>
-        </li>
-        <li class="ui-widget-content ui-corner-tr">
-            <h5 class="ui-widget-header">
-                Task 4</h5>
-        </li>
-    </ul>
-    <ul id="stages" class="ui-widget-content ui-state-default">
-        <%--<h5 class="ui-widget-header">Stages</h5>--%>
-        <li class="ui-widget-header">
-            <p>
-                To Do</p>
-        </li>
-        <li class="ui-widget-header">
-            <p>
-                In Progress</p>
-        </li>
-    </ul>
+   
 </asp:Content>

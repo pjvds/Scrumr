@@ -342,6 +342,29 @@ div#title
 
 /* Scrumboard feshizzle */
 
+#board 
+{
+	width: 90%;	
+}
+
+.storystage
+{
+	vertical-align: top;
+	height: 100px;
+	min-width: 100px;
+}
+
+.task
+{
+	width: 90px;
+	height: 50px;
+	border: 1px solid Black;
+	background-color: Yellow;
+	color: Black;
+	margin: 5px;
+	float:left;
+}
+
 .stage
 {
 	float: left;
