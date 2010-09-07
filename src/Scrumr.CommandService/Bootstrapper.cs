@@ -4,11 +4,8 @@ using Ncqrs.Commanding.CommandExecution.Mapping.Attributes;
 using Ncqrs.Config.StructureMap;
 using Ncqrs;
 using Ncqrs.Commanding.ServiceModel;
-using Ncqrs.Eventing.Storage.SQL;
-using Scrumr.CommandExecutors;
 using Scrumr.Commands;
 using Ncqrs.Eventing.Storage;
-using Scrumr.CommandService.Properties;
 using Ncqrs.Eventing.Storage.NoDB;
 using System.IO;
 using Ncqrs.Eventing.ServiceModel.Bus;
@@ -36,9 +33,6 @@ namespace Scrumr.CommandServicing
 
             var service = new Ncqrs.Commanding.ServiceModel.CommandService();
             service.RegisterExecutorsInAssembly(commandAssembly);
-
-            // TODO: Create something that auto scans assembly.
-            service.RegisterExecutor(new AddNewStoryToProductBacklogExecutor());
 
             return service;
         }

@@ -43,8 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddNewStoryToProductBacklog.cs" />
-    <Compile Include="ChangeProductBacklogStoryDescription.cs" />
     <Compile Include="CreateNewProject.cs" />
     <Compile Include="MoveTaskToStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
