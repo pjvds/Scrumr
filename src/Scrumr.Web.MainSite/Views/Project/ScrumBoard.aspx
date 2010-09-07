@@ -1,7 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage<dynamic>" %>
 
- 
-
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
 	ScrumBoard
 </asp:Content>
@@ -11,7 +9,6 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-
     <div>
 		<ul id="stories" class="stories ui-helper-reset ui-helper-clearfix">
 			<li class="ui-widget-content ui-corner-tr">
