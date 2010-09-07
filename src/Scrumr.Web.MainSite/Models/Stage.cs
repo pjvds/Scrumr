@@ -7,6 +7,7 @@ namespace Scrumr.Web.MainSite.Models
 {
     public class Stage
     {
+        public Guid Id { get; set; }
         public String Name { get; set; }
         //public List<Task> Tasks { get; private set; }
 

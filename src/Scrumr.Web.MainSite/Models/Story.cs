@@ -7,6 +7,7 @@ namespace Scrumr.Web.MainSite.Models
 {
     public class Story
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public List<Task> Tasks { get; private set; }
         

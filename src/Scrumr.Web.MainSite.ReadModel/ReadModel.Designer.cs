@@ -19,6 +19,10 @@ using System.Runtime.Serialization;
 #region EDM Relationship Metadata
 
 [assembly: EdmRelationshipAttribute("ReadModel", "ProjectModelStoryModel", "ProjectModel", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProjectModel), "StoryModel", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.StoryModel))]
+[assembly: EdmRelationshipAttribute("ReadModel", "ScrumboardStory", "Scrumboard", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Scrumboard), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Story))]
+[assembly: EdmRelationshipAttribute("ReadModel", "StoryTask", "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Story), "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Task))]
+[assembly: EdmRelationshipAttribute("ReadModel", "ScrumboardStage", "Scrumboard", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Scrumboard), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
+[assembly: EdmRelationshipAttribute("ReadModel", "TaskStage", "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Task), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
 
 #endregion
 
@@ -101,6 +105,70 @@ namespace Scrumr.Web.MainSite.ReadModel
             }
         }
         private ObjectSet<StoryModel> _StoryModels;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Task> Tasks
+        {
+            get
+            {
+                if ((_Tasks == null))
+                {
+                    _Tasks = base.CreateObjectSet<Task>("Tasks");
+                }
+                return _Tasks;
+            }
+        }
+        private ObjectSet<Task> _Tasks;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Stage> Stages
+        {
+            get
+            {
+                if ((_Stages == null))
+                {
+                    _Stages = base.CreateObjectSet<Stage>("Stages");
+                }
+                return _Stages;
+            }
+        }
+        private ObjectSet<Stage> _Stages;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Story> Stories
+        {
+            get
+            {
+                if ((_Stories == null))
+                {
+                    _Stories = base.CreateObjectSet<Story>("Stories");
+                }
+                return _Stories;
+            }
+        }
+        private ObjectSet<Story> _Stories;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Scrumboard> Scrumboards
+        {
+            get
+            {
+                if ((_Scrumboards == null))
+                {
+                    _Scrumboards = base.CreateObjectSet<Scrumboard>("Scrumboards");
+                }
+                return _Scrumboards;
+            }
+        }
+        private ObjectSet<Scrumboard> _Scrumboards;
 
         #endregion
         #region AddTo Methods
@@ -119,6 +187,38 @@ namespace Scrumr.Web.MainSite.ReadModel
         public void AddToStoryModels(StoryModel storyModel)
         {
             base.AddObject("StoryModels", storyModel);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Tasks EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToTasks(Task task)
+        {
+            base.AddObject("Tasks", task);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Stages EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToStages(Stage stage)
+        {
+            base.AddObject("Stages", stage);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Stories EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToStories(Story story)
+        {
+            base.AddObject("Stories", story);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Scrumboards EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToScrumboards(Scrumboard scrumboard)
+        {
+            base.AddObject("Scrumboards", scrumboard);
         }
 
         #endregion
@@ -228,6 +328,412 @@ namespace Scrumr.Web.MainSite.ReadModel
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StoryModel>("ReadModel.ProjectModelStoryModel", "StoryModel", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Scrumboard")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Scrumboard : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Scrumboard object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        public static Scrumboard CreateScrumboard(global::System.Guid id)
+        {
+            Scrumboard scrumboard = new Scrumboard();
+            scrumboard.Id = id;
+            return scrumboard;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStory", "Story")]
+        public EntityCollection<Story> Stories
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Story>("ReadModel.ScrumboardStory", "Story");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Story>("ReadModel.ScrumboardStory", "Story", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStage", "Stage")]
+        public EntityCollection<Stage> Stages
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Stage>("ReadModel.ScrumboardStage", "Stage");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Stage>("ReadModel.ScrumboardStage", "Stage", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Stage")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Stage : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Stage object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        public static Stage CreateStage(global::System.Guid id, global::System.String name)
+        {
+            Stage stage = new Stage();
+            stage.Id = id;
+            stage.Name = name;
+            return stage;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStage", "Scrumboard")]
+        public Scrumboard Scrumboard
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Scrumboard> ScrumboardReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "TaskStage", "Task")]
+        public Task Task
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Task> TaskReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Task>("ReadModel.TaskStage", "Task", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Story")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Story : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Story object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        public static Story CreateStory(global::System.Guid id, global::System.String description)
+        {
+            Story story = new Story();
+            story.Id = id;
+            story.Description = description;
+            return story;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStory", "Scrumboard")]
+        public Scrumboard Scrumboard
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Scrumboard> ScrumboardReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "StoryTask", "Task")]
+        public EntityCollection<Task> Tasks
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Task>("ReadModel.StoryTask", "Task");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Task>("ReadModel.StoryTask", "Task", value);
                 }
             }
         }
@@ -350,6 +856,166 @@ namespace Scrumr.Web.MainSite.ReadModel
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProjectModel>("ReadModel.ProjectModelStoryModel", "ProjectModel", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Task")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Task : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Task object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="description">Initial value of the Description property.</param>
+        public static Task CreateTask(global::System.Guid id, global::System.String description)
+        {
+            Task task = new Task();
+            task.Id = id;
+            task.Description = description;
+            return task;
+        }
+
+        #endregion
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                if (_Id != value)
+                {
+                    OnIdChanging(value);
+                    ReportPropertyChanging("Id");
+                    _Id = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("Id");
+                    OnIdChanged();
+                }
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+
+        #endregion
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "StoryTask", "Story")]
+        public Story Story
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Story>("ReadModel.StoryTask", "Story").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Story>("ReadModel.StoryTask", "Story").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Story> StoryReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Story>("ReadModel.StoryTask", "Story");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Story>("ReadModel.StoryTask", "Story", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "TaskStage", "Stage")]
+        public Stage Stages
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Stage>("ReadModel.TaskStage", "Stage").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Stage>("ReadModel.TaskStage", "Stage").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Stage> StagesReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Stage>("ReadModel.TaskStage", "Stage");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Stage>("ReadModel.TaskStage", "Stage", value);
                 }
             }
         }

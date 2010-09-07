@@ -6,6 +6,7 @@ namespace Scrumr.Web.MainSite.Models
     public class ScrumBoard
     {
         private static ScrumBoard SampleBoard;
+        public Guid Id { get; set; }
 
         public List<Story> Stories
         {
