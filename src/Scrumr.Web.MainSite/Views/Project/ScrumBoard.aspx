@@ -42,7 +42,9 @@
                         foreach (var task in tasks)
                         {
                     %>
-                    <div class="task">
+                    <div class="task ui-widget-content ui-corner-tr">
+                        <h5 class="ui-widget-header">
+                            Task</h5>
                         <%: task.Description%>
                     </div>
                     <%      
@@ -58,5 +60,4 @@
             %>
         </tbody>
     </table>
-   
 </asp:Content>

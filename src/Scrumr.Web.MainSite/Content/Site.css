@@ -363,7 +363,10 @@ div#title
 	color: Black;
 	margin: 5px;
 	float:left;
+	text-align: center;
 }
+
+.task h5 { margin: 0 0 0.4em; cursor: move; }
 
 .stage
 {

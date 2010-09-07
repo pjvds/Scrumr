@@ -1,7 +1,7 @@
 ﻿$(function () {
     var $board = $('#board');
 
-    // let the stage items be droppable, accepting the story items
+    // let the storystages be droppable, accepting the tasks
     $('.storystage', $board).droppable({
         accept: '#board .task',
         activeClass: 'ui-state-highlight',
@@ -10,7 +10,7 @@
         }
     });
 
-    // let the stories items be draggable
+    // let the tasks be draggable
     $('.task', $board).draggable({
         cancel: 'a.ui-icon', // clicking an icon won't initiate dragging
         revert: 'invalid', // when not dropped, the item will revert back to its initial position
