@@ -46,6 +46,7 @@
     <Compile Include="AddNewStoryToProductBacklog.cs" />
     <Compile Include="ChangeProductBacklogStoryDescription.cs" />
     <Compile Include="CreateNewProject.cs" />
+    <Compile Include="MoveTaskToStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
