@@ -53,6 +53,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReadModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ScrumboardView.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ScrumboardView.edmx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="ReadModel.edmx">
@@ -62,6 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <EntityDeploy Include="ScrumboardView.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ScrumboardView.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ReadModel.edmx.sql" />
