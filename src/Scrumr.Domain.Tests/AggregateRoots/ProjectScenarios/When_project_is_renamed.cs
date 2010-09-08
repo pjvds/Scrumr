@@ -12,7 +12,6 @@ namespace Scrumr.Domain.Tests.AggregateRoots
     class When_renaming_a_Project : AggregateRootTestFixture<Project>
     {
         private Guid TheId = Guid.NewGuid();
-        private Guid TheProductBacklogId = Guid.NewGuid();
         private string OldName = "My old project";
         private string NewName = "My new project";
 
@@ -20,7 +19,7 @@ namespace Scrumr.Domain.Tests.AggregateRoots
         {
             return Prepare.Events
             (
-                new NewProjectCreated(TheId, TheProductBacklogId, OldName)
+                new NewProjectCreated(TheId, OldName, "myproject")
             )
             .ForSource(TheId);
         }

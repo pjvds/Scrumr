@@ -2,7 +2,6 @@
 using System.Linq;
 using FluentAssertions;
 using Ncqrs.Spec;
-using Scrumr.Events;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain.Tests.AggregateRoots
@@ -12,10 +11,11 @@ namespace Scrumr.Domain.Tests.AggregateRoots
     {
         private Guid TheId = Guid.NewGuid();
         private String TheName = "My Project";
+        private String TheShortCode = "myproject";
 
         protected override void When()
         {
-            AggregateRoot = new Project(TheId, TheName);
+            AggregateRoot = new Project(TheId, TheName, TheShortCode);
         }
 
         [Then]
@@ -41,7 +41,7 @@ namespace Scrumr.Domain.Tests.AggregateRoots
             
             evnt.Name.Should().Be(TheName);
 
-            evnt.ProductBacklogId.Should().NotBe(Guid.Empty);
+            evnt.ShortCode.Should().NotBe(TheShortCode);
         }
     }
 }

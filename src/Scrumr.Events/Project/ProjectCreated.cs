@@ -15,26 +15,22 @@ namespace Scrumr.Events.Project
         public Guid ProjectId { get; set; }
 
         /// <summary>
-        /// Gets or sets the product backlog id.
-        /// </summary>
-        /// <value>The product backlog id.</value>
-        public Guid ProductBacklogId { get; set; }
-
-        /// <summary>
         /// Gets or sets the name of the project.
         /// </summary>
         public string Name { get; set; }
+
+        public string ShortCode { get; set; }
 
         public NewProjectCreated()
         {
             
         }
 
-        public NewProjectCreated(Guid projectId, Guid productBacklogId, string name)
+        public NewProjectCreated(Guid projectId, string name, string shortCode)
         {
             ProjectId = projectId;
-            ProductBacklogId = productBacklogId;
             Name = name;
+            ShortCode = shortCode;
         }
     }
 }

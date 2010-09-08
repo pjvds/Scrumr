@@ -28,17 +28,6 @@ namespace Scrumr.Web.MainSite.Controllers
             return RedirectToAction("Details", new {cmd.ProjectId});
         }
 
-        public ActionResult AddNewStory(Guid productId)
-        {
-            return Json(new AddNewStoryToProductBacklog {ProductId = productId, StoryId = Guid.NewGuid()});
-        }
-
-        [HttpPost]
-        public ActionResult AddNewStory(AddNewStoryToProductBacklog command)
-        {
-            return RedirectToAction("Details", new {command.ProductId});
-        }
-
         public ActionResult ScrumBoard()
         {
             using(var context = new ReadModelContainer())

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain
@@ -7,27 +8,37 @@ namespace Scrumr.Domain
     public class Project : ScrumrAggregateRoot
     {
         private string _name;
+        private string _shortCode;
         private List<Guid> _members = new List<Guid>();
-
-        private ProductBacklog _productBacklog;
-
-        public ProductBacklog ProductBacklog
-        {
-            get { return _productBacklog; }
-        }
+        private List<Sprint> _sprints = new List<Sprint>();
 
         protected Project()
         {
         }
 
-        public Project(Guid id, string name) : base(id)
+        public Project(Guid id, string name, string shortCode) : base(id)
         {
             ValidateName(name);
 
-            var productBacklogId = Guid.NewGuid(); // TODO: maybe we need to add an GenerateEntityId method to the agg root class that uses the generator from the environment.
+            ApplyEvent(new NewProjectCreated(id, name, shortCode));
+        }
 
-            var e = new NewProjectCreated(id, productBacklogId, name);
-            ApplyEvent(e);
+        public void ChangeActiveSprint(Guid sprintId)
+        {
+            var currentlyActive = _sprints.SingleOrDefault(sprint => sprint.IsActive);
+            var newActive = _sprints.SingleOrDefault(sprint => sprint.EntityId == sprintId);
+
+            if(newActive == null)
+            {
+                throw new DomainException("Cannot set activate sprint to sprint with id "+sprintId+" since it is not part of the project.");
+            }
+
+            if(currentlyActive != null)
+            {
+                currentlyActive.Deactivate();
+            }
+
+            newActive.Activate();
         }
 
         protected void ValidateName(string name)
@@ -60,16 +71,28 @@ namespace Scrumr.Domain
             ApplyEvent(e);
         }
 
+        public void AddSprint(Guid id, string name, DateTime from, DateTime to)
+        {
+            // TODO: Add constrains.
+            ApplyEvent(new SprintAddedToProject(name, from, to));
+        }
+
+        protected  void OnProjectCreated(NewProjectCreated e)
+        {
+            _name = e.Name;
+            _shortCode = e.ShortCode;
+        }
+
+        protected void OnSprintAdded(SprintAddedToProject e)
+        {
+            var sprint = new Sprint(this, e.SprintId, e.Name, e.From, e.To);
+            _sprints.Add(sprint);
+        }
+
         public void RemoveMember(Guid memberId)
         {
             var e = new MemberRemovedFromProject(memberId);
             ApplyEvent(e);
-        }
-
-        private void OnProjectCreated(NewProjectCreated e)
-        {
-            _productBacklog = new ProductBacklog(this, e.ProjectId, "Product backlog");
-            _name = e.Name;
         }
 
         private void OnProjectRenamed(ProjectRenamed e)

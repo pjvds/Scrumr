@@ -17,7 +17,7 @@ namespace Scrumr.Domain.Tests.Scenarios.Creating_a_new_project
             return Map.
                 Command<CreateNewProject>().
                 ToAggregateRoot<Project>().
-                CreateNew(c => new Project(c.ProjectId, c.Name));
+                CreateNew(c => new Project(c.ProjectId, c.Name, c.ShortCode));
         }
 
         protected override CreateNewProject WhenExecutingCommand()

@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AggregateRoots\ProjectScenarios\When_adding_a_member_to_a_project_that_is_already_added.cs" />
-    <Compile Include="AggregateRoots\ProjectScenarios\When_adding_a_new_story_to_a_Project_ProductBacklog.cs" />
     <Compile Include="AggregateRoots\ProjectScenarios\When_creating_new_Project.cs" />
     <Compile Include="AggregateRoots\ProjectScenarios\When_project_is_renamed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

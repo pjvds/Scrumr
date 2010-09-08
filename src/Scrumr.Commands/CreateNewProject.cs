@@ -13,6 +13,9 @@ namespace Scrumr.Commands
         [Parameter(2)]
         public string Name { get; set; }
 
+        [Parameter(3)]
+        public string ShortCode { get; set; }
+
         public CreateNewProject()
         {
             
