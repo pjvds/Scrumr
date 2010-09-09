@@ -6,47 +6,35 @@
     <edmx:StorageModels>
     <Schema Namespace="ReadModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="ReadModelStoreContainer">
-    <EntitySet Name="ProjectModels" EntityType="ReadModel.Store.ProjectModels" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="StoryModels" EntityType="ReadModel.Store.StoryModels" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Projects" EntityType="ReadModel.Store.Projects" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Tasks" EntityType="ReadModel.Store.Tasks" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Stages" EntityType="ReadModel.Store.Stages" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Stories" EntityType="ReadModel.Store.Stories" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Scrumboards" EntityType="ReadModel.Store.Scrumboards" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="ProjectModelStoryModel" Association="ReadModel.Store.ProjectModelStoryModel">
-      <End Role="ProjectModel" EntitySet="ProjectModels" />
-      <End Role="StoryModel" EntitySet="StoryModels" />
-    </AssociationSet>
-    <AssociationSet Name="ScrumboardStory" Association="ReadModel.Store.ScrumboardStory">
-      <End Role="Scrumboard" EntitySet="Scrumboards" />
-      <End Role="Story" EntitySet="Stories" />
-    </AssociationSet>
+    <EntitySet Name="Sprints" EntityType="ReadModel.Store.Sprints" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="StoryTask" Association="ReadModel.Store.StoryTask">
       <End Role="Story" EntitySet="Stories" />
       <End Role="Task" EntitySet="Tasks" />
-    </AssociationSet>
-    <AssociationSet Name="ScrumboardStage" Association="ReadModel.Store.ScrumboardStage">
-      <End Role="Scrumboard" EntitySet="Scrumboards" />
-      <End Role="Stage" EntitySet="Stages" />
     </AssociationSet>
     <AssociationSet Name="TaskStage" Association="ReadModel.Store.TaskStage">
       <End Role="Task" EntitySet="Tasks" />
       <End Role="Stage" EntitySet="Stages" />
     </AssociationSet>
+    <AssociationSet Name="SprintStage" Association="ReadModel.Store.SprintStage">
+      <End Role="Sprint" EntitySet="Sprints" />
+      <End Role="Stage" EntitySet="Stages" />
+    </AssociationSet>
+    <AssociationSet Name="SprintStory" Association="ReadModel.Store.SprintStory">
+      <End Role="Sprint" EntitySet="Sprints" />
+      <End Role="Story" EntitySet="Stories" />
+    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="ProjectModels">
+  <EntityType Name="Projects">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-  </EntityType>
-  <EntityType Name="StoryModels">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="uniqueidentifier" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ProjectModel_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ShortCode" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Tasks">
     <Key>
@@ -55,7 +43,7 @@
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Story_Id" Type="uniqueidentifier" Nullable="false" />
-    <Property Name="Stages_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Stage_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Stages">
     <Key>
@@ -63,7 +51,7 @@
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Scrumboard_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Sprint_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
   <EntityType Name="Stories">
     <Key>
@@ -71,38 +59,19 @@
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
     <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Scrumboard_Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Sprint_Id" Type="uniqueidentifier" Nullable="false" />
   </EntityType>
-  <EntityType Name="Scrumboards">
+  <EntityType Name="Sprints">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="ProjectId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="From" Type="datetime" Nullable="false" />
+    <Property Name="To" Type="datetime" Nullable="false" />
+    <Property Name="IsActive" Type="bit" Nullable="false" />
   </EntityType>
-  <Association Name="ProjectModelStoryModel">
-    <End Role="ProjectModel" Type="ReadModel.Store.ProjectModels" Multiplicity="1" />
-    <End Role="StoryModel" Type="ReadModel.Store.StoryModels" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="ProjectModel">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="StoryModel">
-        <PropertyRef Name="ProjectModel_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ScrumboardStory">
-    <End Role="Scrumboard" Type="ReadModel.Store.Scrumboards" Multiplicity="1" />
-    <End Role="Story" Type="ReadModel.Store.Stories" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Scrumboard">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Story">
-        <PropertyRef Name="Scrumboard_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="StoryTask">
     <End Role="Story" Type="ReadModel.Store.Stories" Multiplicity="1" />
     <End Role="Task" Type="ReadModel.Store.Tasks" Multiplicity="*" />
@@ -115,18 +84,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ScrumboardStage">
-    <End Role="Scrumboard" Type="ReadModel.Store.Scrumboards" Multiplicity="1" />
-    <End Role="Stage" Type="ReadModel.Store.Stages" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Scrumboard">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Stage">
-        <PropertyRef Name="Scrumboard_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="TaskStage">
     <End Role="Task" Type="ReadModel.Store.Tasks" Multiplicity="*" />
     <End Role="Stage" Type="ReadModel.Store.Stages" Multiplicity="1" />
@@ -135,7 +92,31 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="Task">
-        <PropertyRef Name="Stages_Id" />
+        <PropertyRef Name="Stage_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SprintStage">
+    <End Role="Sprint" Type="ReadModel.Store.Sprints" Multiplicity="1" />
+    <End Role="Stage" Type="ReadModel.Store.Stages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sprint">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Stage">
+        <PropertyRef Name="Sprint_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="SprintStory">
+    <End Role="Sprint" Type="ReadModel.Store.Sprints" Multiplicity="1" />
+    <End Role="Story" Type="ReadModel.Store.Stories" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sprint">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Story">
+        <PropertyRef Name="Sprint_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -144,60 +125,35 @@
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ReadModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
         <EntityContainer Name="ReadModelContainer" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="ProjectModels" EntityType="ReadModel.ProjectModel" />
-          <EntitySet Name="StoryModels" EntityType="ReadModel.StoryModel" />
-          <AssociationSet Name="ProjectModelStoryModel" Association="ReadModel.ProjectModelStoryModel">
-            <End Role="ProjectModel" EntitySet="ProjectModels" />
-            <End Role="StoryModel" EntitySet="StoryModels" />
-          </AssociationSet>
+          <EntitySet Name="Projects" EntityType="ReadModel.Project" />
           <EntitySet Name="Tasks" EntityType="ReadModel.Task" />
           <EntitySet Name="Stages" EntityType="ReadModel.Stage" />
-          <AssociationSet Name="ScrumboardStory" Association="ReadModel.ScrumboardStory">
-            <End Role="Scrumboard" EntitySet="Scrumboards" />
-            <End Role="Story" EntitySet="Stories" />
-          </AssociationSet>
           <EntitySet Name="Stories" EntityType="ReadModel.Story" />
-          <EntitySet Name="Scrumboards" EntityType="ReadModel.Scrumboard" />
           <AssociationSet Name="StoryTask" Association="ReadModel.StoryTask">
             <End Role="Story" EntitySet="Stories" />
             <End Role="Task" EntitySet="Tasks" />
-          </AssociationSet>
-          <AssociationSet Name="ScrumboardStage" Association="ReadModel.ScrumboardStage">
-            <End Role="Scrumboard" EntitySet="Scrumboards" />
-            <End Role="Stage" EntitySet="Stages" />
           </AssociationSet>
           <AssociationSet Name="TaskStage" Association="ReadModel.TaskStage">
             <End Role="Task" EntitySet="Tasks" />
             <End Role="Stage" EntitySet="Stages" />
           </AssociationSet>
+          <EntitySet Name="Sprints" EntityType="ReadModel.Sprint" />
+          <AssociationSet Name="SprintStage" Association="ReadModel.SprintStage">
+            <End Role="Sprint" EntitySet="Sprints" />
+            <End Role="Stage" EntitySet="Stages" />
+          </AssociationSet>
+          <AssociationSet Name="SprintStory" Association="ReadModel.SprintStory">
+            <End Role="Sprint" EntitySet="Sprints" />
+            <End Role="Story" EntitySet="Stories" />
+          </AssociationSet>
           </EntityContainer>
-        <EntityType Name="ProjectModel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Name" Nullable="false" />
-          <NavigationProperty Name="ProductBacklogStoryModels" Relationship="ReadModel.ProjectModelStoryModel" FromRole="ProjectModel" ToRole="StoryModel" />
-        </EntityType>
-        <EntityType Name="StoryModel">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Type="String" Name="Description" Nullable="false" />
-          <NavigationProperty Name="ProjectModel" Relationship="ReadModel.ProjectModelStoryModel" FromRole="StoryModel" ToRole="ProjectModel" />
-        </EntityType>
-        <Association Name="ProjectModelStoryModel">
-          <End Type="ReadModel.ProjectModel" Role="ProjectModel" Multiplicity="1" />
-          <End Type="ReadModel.StoryModel" Role="StoryModel" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Scrumboard">
+        <EntityType Name="Project">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="Stories" Relationship="ReadModel.ScrumboardStory" FromRole="Scrumboard" ToRole="Story" />
-          <NavigationProperty Name="Stages" Relationship="ReadModel.ScrumboardStage" FromRole="Scrumboard" ToRole="Stage" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="String" Name="ShortCode" Nullable="false" />
         </EntityType>
         <EntityType Name="Story">
           <Key>
@@ -205,8 +161,8 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Type="String" Name="Description" Nullable="false" />
-          <NavigationProperty Name="Scrumboard" Relationship="ReadModel.ScrumboardStory" FromRole="Story" ToRole="Scrumboard" />
           <NavigationProperty Name="Tasks" Relationship="ReadModel.StoryTask" FromRole="Story" ToRole="Task" />
+          <NavigationProperty Name="Sprint" Relationship="ReadModel.SprintStory" FromRole="Story" ToRole="Sprint" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -222,25 +178,38 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <NavigationProperty Name="Scrumboard" Relationship="ReadModel.ScrumboardStage" FromRole="Stage" ToRole="Scrumboard" />
           <NavigationProperty Name="Task" Relationship="ReadModel.TaskStage" FromRole="Stage" ToRole="Task" />
           <Property Type="String" Name="Name" Nullable="false" />
+          <NavigationProperty Name="Sprint" Relationship="ReadModel.SprintStage" FromRole="Stage" ToRole="Sprint" />
         </EntityType>
-        <Association Name="ScrumboardStory">
-          <End Type="ReadModel.Scrumboard" Role="Scrumboard" Multiplicity="1" />
-          <End Type="ReadModel.Story" Role="Story" Multiplicity="*" />
-        </Association>
         <Association Name="StoryTask">
           <End Type="ReadModel.Story" Role="Story" Multiplicity="1" />
           <End Type="ReadModel.Task" Role="Task" Multiplicity="*" />
         </Association>
-        <Association Name="ScrumboardStage">
-          <End Type="ReadModel.Scrumboard" Role="Scrumboard" Multiplicity="1" />
+        <Association Name="TaskStage">
+          <End Type="ReadModel.Task" Role="Task" Multiplicity="*" />
+          <End Type="ReadModel.Stage" Role="Stage" Multiplicity="1" />
+        </Association>
+        <EntityType Name="Sprint">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="ProjectId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" />
+          <Property Type="DateTime" Name="From" Nullable="false" />
+          <Property Type="DateTime" Name="To" Nullable="false" />
+          <Property Type="Boolean" Name="IsActive" Nullable="false" />
+          <NavigationProperty Name="Stages" Relationship="ReadModel.SprintStage" FromRole="Sprint" ToRole="Stage" />
+          <NavigationProperty Name="Stories" Relationship="ReadModel.SprintStory" FromRole="Sprint" ToRole="Story" />
+        </EntityType>
+        <Association Name="SprintStage">
+          <End Type="ReadModel.Sprint" Role="Sprint" Multiplicity="1" />
           <End Type="ReadModel.Stage" Role="Stage" Multiplicity="*" />
         </Association>
-        <Association Name="TaskStage">
-          <End Type="ReadModel.Task" Role="Task" Multiplicity="1" />
-          <End Type="ReadModel.Stage" Role="Stage" Multiplicity="1" />
+        <Association Name="SprintStory">
+          <End Type="ReadModel.Sprint" Role="Sprint" Multiplicity="1" />
+          <End Type="ReadModel.Story" Role="Story" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -248,19 +217,12 @@
     <edmx:Mappings>
     <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="ReadModelStoreContainer" CdmEntityContainer="ReadModelContainer">
-    <EntitySetMapping Name="ProjectModels">
-      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.ProjectModel)">
-        <MappingFragment StoreEntitySet="ProjectModels">
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.Project)">
+        <MappingFragment StoreEntitySet="Projects">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="StoryModels">
-      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.StoryModel)">
-        <MappingFragment StoreEntitySet="StoryModels">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ShortCode" ColumnName="ShortCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -288,29 +250,18 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="Scrumboards">
-      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.Scrumboard)">
-        <MappingFragment StoreEntitySet="Scrumboards">
+    <EntitySetMapping Name="Sprints">
+      <EntityTypeMapping TypeName="IsTypeOf(ReadModel.Sprint)">
+        <MappingFragment StoreEntitySet="Sprints">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="From" ColumnName="From" />
+          <ScalarProperty Name="To" ColumnName="To" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="ProjectModelStoryModel" TypeName="ReadModel.ProjectModelStoryModel" StoreEntitySet="StoryModels">
-      <EndProperty Name="ProjectModel">
-        <ScalarProperty Name="Id" ColumnName="ProjectModel_Id" />
-      </EndProperty>
-      <EndProperty Name="StoryModel">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="ScrumboardStory" TypeName="ReadModel.ScrumboardStory" StoreEntitySet="Stories">
-      <EndProperty Name="Scrumboard">
-        <ScalarProperty Name="Id" ColumnName="Scrumboard_Id" />
-      </EndProperty>
-      <EndProperty Name="Story">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="StoryTask" TypeName="ReadModel.StoryTask" StoreEntitySet="Tasks">
       <EndProperty Name="Story">
         <ScalarProperty Name="Id" ColumnName="Story_Id" />
@@ -319,19 +270,27 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="ScrumboardStage" TypeName="ReadModel.ScrumboardStage" StoreEntitySet="Stages">
-      <EndProperty Name="Scrumboard">
-        <ScalarProperty Name="Id" ColumnName="Scrumboard_Id" />
+    <AssociationSetMapping Name="TaskStage" TypeName="ReadModel.TaskStage" StoreEntitySet="Tasks">
+      <EndProperty Name="Stage">
+        <ScalarProperty Name="Id" ColumnName="Stage_Id" />
+      </EndProperty>
+      <EndProperty Name="Task">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="SprintStage" TypeName="ReadModel.SprintStage" StoreEntitySet="Stages">
+      <EndProperty Name="Sprint">
+        <ScalarProperty Name="Id" ColumnName="Sprint_Id" />
       </EndProperty>
       <EndProperty Name="Stage">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="TaskStage" TypeName="ReadModel.TaskStage" StoreEntitySet="Tasks">
-      <EndProperty Name="Stage">
-        <ScalarProperty Name="Id" ColumnName="Stages_Id" />
+    <AssociationSetMapping Name="SprintStory" TypeName="ReadModel.SprintStory" StoreEntitySet="Stories">
+      <EndProperty Name="Sprint">
+        <ScalarProperty Name="Id" ColumnName="Sprint_Id" />
       </EndProperty>
-      <EndProperty Name="Task">
+      <EndProperty Name="Story">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
@@ -354,33 +313,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram Name="ReadModel" >
-        <EntityTypeShape EntityType="ReadModel.ProjectModel" Width="1.5" PointX="2" PointY="1.875" Height="1.4033821614583331" />
-        <EntityTypeShape EntityType="ReadModel.StoryModel" Width="1.5" PointX="5.875" PointY="0.875" Height="1.4033821614583331" />
-        <AssociationConnector Association="ReadModel.ProjectModelStoryModel">
-          <ConnectorPoint PointX="3.5" PointY="2.172841796875" />
-          <ConnectorPoint PointX="5.875" PointY="2.172841796875" />
-        </AssociationConnector>
-        <EntityTypeShape EntityType="ReadModel.Scrumboard" Width="1.5" PointX="4.5" PointY="3.375" Height="1.2110807291666665" />
-        <EntityTypeShape EntityType="ReadModel.Story" Width="1.5" PointX="7.75" PointY="3.25" Height="1.5956835937499996" />
+        <EntityTypeShape EntityType="ReadModel.Project" Width="1.5" PointX="2" PointY="1.875" Height="1.59568359375" />
+        <EntityTypeShape EntityType="ReadModel.Story" Width="1.5" PointX="9" PointY="4.5" Height="1.5956835937499996" />
         <EntityTypeShape EntityType="ReadModel.Task" Width="1.5" PointX="6.125" PointY="6.5" Height="1.7879850260416657" />
-        <EntityTypeShape EntityType="ReadModel.Stage" Width="1.5" PointX="3.25" PointY="6" Height="1.7879850260416657" />
-        <AssociationConnector Association="ReadModel.ScrumboardStory">
-          <ConnectorPoint PointX="6" PointY="4.0766910807291667" />
-          <ConnectorPoint PointX="7.75" PointY="4.0766910807291667" />
-        </AssociationConnector>
+        <EntityTypeShape EntityType="ReadModel.Stage" Width="1.5" PointX="4.125" PointY="3.875" Height="1.5956835937499996" />
         <AssociationConnector Association="ReadModel.StoryTask">
-          <ConnectorPoint PointX="8.5" PointY="5.0379850260416656" />
-          <ConnectorPoint PointX="8.5" PointY="7.3939925130208328" />
-          <ConnectorPoint PointX="7.625" PointY="7.3939925130208328" />
-        </AssociationConnector>
-        <AssociationConnector Association="ReadModel.ScrumboardStage">
-          <ConnectorPoint PointX="5.4062525" PointY="4.97068359375" />
-          <ConnectorPoint PointX="5.4062525" PointY="6.5647453924560546" />
-          <ConnectorPoint PointX="4.75" PointY="6.5647453924560546" />
+          <ConnectorPoint PointX="9" PointY="5.4766853841145835" />
+          <ConnectorPoint PointX="6.9843775" PointY="5.4766853841145835" />
+          <ConnectorPoint PointX="6.9843775" PointY="6.5" />
         </AssociationConnector>
         <AssociationConnector Association="ReadModel.TaskStage">
-          <ConnectorPoint PointX="6.125" PointY="7.2388652092488606" />
-          <ConnectorPoint PointX="4.75" PointY="7.2388652092488606" />
+          <ConnectorPoint PointX="6.875" PointY="6.5" />
+          <ConnectorPoint PointX="6.875" PointY="4.672841796875" />
+          <ConnectorPoint PointX="5.625" PointY="4.672841796875" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="ReadModel.Sprint" Width="1.5" PointX="6.5" PointY="1.625" Height="2.364889322916667" />
+        <AssociationConnector Association="ReadModel.SprintStage">
+          <ConnectorPoint PointX="6.5" PointY="2.7499995" />
+          <ConnectorPoint PointX="4.875" PointY="2.7499995" />
+          <ConnectorPoint PointX="4.875" PointY="3.875" />
+        </AssociationConnector>
+        <AssociationConnector Association="ReadModel.SprintStory">
+          <ConnectorPoint PointX="8" PointY="2.9035953776041667" />
+          <ConnectorPoint PointX="9.75" PointY="2.9035953776041667" />
+          <ConnectorPoint PointX="9.75" PointY="4.5" />
         </AssociationConnector>
       </Diagram>
     </edmx:Diagrams>

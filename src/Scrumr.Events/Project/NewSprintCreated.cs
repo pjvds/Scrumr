@@ -14,8 +14,9 @@ namespace Scrumr.Events.Project
         public SprintAddedToProject()
         { }
 
-        public SprintAddedToProject(string name, DateTime from, DateTime to)
+        public SprintAddedToProject(Guid sprintId, string name, DateTime from, DateTime to)
         {
+            SprintId = sprintId;
             Name = name;
             From = from;
             To = to;

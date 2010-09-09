@@ -15,13 +15,15 @@ namespace Scrumr.Web.MainSite
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
+            
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
 
+            //routes.Add(new Route());
+            //routes.MapRoute("Project", "{name}/{action}", new { controller = "Project", action = "Index", name })
         }
 
         protected void Application_Start()

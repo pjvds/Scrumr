@@ -65,6 +65,12 @@ namespace Scrumr.Domain
             ApplyEvent(e);
         }
 
+        public void AddNewStoryToSprint(Guid sprintId, Guid storyId, String description)
+        {
+            var sprint = _sprints.Single(s => s.EntityId == sprintId);
+            sprint.AddNewStory(storyId, description);
+        }
+
         public void AddSprint(Guid sprintId, string name, DateTime from, DateTime to)
         {
             // TODO: Add constrains.

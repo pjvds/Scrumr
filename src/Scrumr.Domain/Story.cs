@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ncqrs.Domain;
-using Ncqrs.Eventing.Sourcing;
 using Scrumr.Events.Project;
 
 namespace Scrumr.Domain

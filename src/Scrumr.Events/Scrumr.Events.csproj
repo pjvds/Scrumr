@@ -45,14 +45,16 @@
   <ItemGroup>
     <Compile Include="Member\MemberEvent.cs" />
     <Compile Include="Member\NewMemberCreated.cs" />
+    <Compile Include="Project\AddNewStoryToSprint.cs" />
     <Compile Include="Project\MemberRemovedFromProject.cs" />
     <Compile Include="Project\MemberAddedToProject.cs" />
     <Compile Include="Project\NewSprintCreated.cs" />
+    <Compile Include="Project\NewStageAddedToSprint.cs" />
     <Compile Include="Project\ProjectCreated.cs" />
     <Compile Include="Project\ProjectRenamed.cs" />
     <Compile Include="Project\ProjectEvent.cs" />
-    <Compile Include="Project\SprintActivated.cs" />
-    <Compile Include="Project\SprintDeactivated.cs" />
+    <Compile Include="Project\SprintStarted.cs" />
+    <Compile Include="Project\SprintFinished.cs" />
     <Compile Include="Project\StoryAddedToProductBacklog.cs" />
     <Compile Include="Project\StoryRemovedFromProductBacklog.cs" />
     <Compile Include="Project\TaskAddedToStory.cs" />

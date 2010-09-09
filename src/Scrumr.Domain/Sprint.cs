@@ -21,6 +21,7 @@ namespace Scrumr.Domain
         public Sprint(Project parent, Guid id, string name, DateTime from, DateTime to) : base(parent, id)
         {
             _stages = new List<Stage>();
+            _stories = new List<Story>();
         }
 
         public void AddNewStory(Guid storyId, string description)

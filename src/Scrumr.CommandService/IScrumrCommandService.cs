@@ -9,6 +9,7 @@ namespace Scrumr.CommandService
     [ServiceKnownType(typeof(AddNewSprintToProject))]
     [ServiceKnownType(typeof(CreateNewProject))]
     [ServiceKnownType(typeof(StartSprint))]
+    [ServiceKnownType(typeof(AddNewStoryToSprint))]
     public interface IScrumrCommandService
     {
         [OperationContract]

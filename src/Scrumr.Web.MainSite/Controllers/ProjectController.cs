@@ -20,31 +20,41 @@ namespace Scrumr.Web.MainSite.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(CreateNewProject cmd)
+        public ActionResult Create(CreateNewProject createCommand)
         {
+            var service = new ScrumrCommandServiceClient();
+            var sprintId = Guid.NewGuid();
+
+            service.ExecuteCommand(createCommand);
+            service.ExecuteCommand(new AddNewSprintToProject(createCommand.ProjectId, sprintId, "Sprint 0", DateTime.UtcNow, DateTime.UtcNow.AddDays(7 * 4)));
+            service.ExecuteCommand(new StartSprint(createCommand.ProjectId, sprintId));
+
+            return RedirectToAction("ScrumBoard", new {createCommand.ProjectId});
+        }
+
+        public Guid AddStory(Guid projectId, Guid sprintId, string description)
+        {
+            Guid storyId = Guid.NewGuid();
+            var cmd = new AddNewStoryToSprint(projectId, sprintId, storyId, description);
             var service = new ScrumrCommandServiceClient();
             service.ExecuteCommand(cmd);
 
-            return RedirectToAction("Details", new {cmd.ProjectId});
+            return storyId;
         }
 
-        public ActionResult ScrumBoard()
+        public ActionResult ScrumBoard(Guid sprintId)
         {
             using(var context = new ReadModelContainer())
             {
-                var sampleBoardId = Guid.Parse("{1BCDB4DC-D234-4AC0-9AFA-1EDABF7C4D31}");
                 context.ContextOptions.LazyLoadingEnabled = false;
                 context.ContextOptions.ProxyCreationEnabled = false;
 
-                var sampleBoard = context.Scrumboards.Include("Stages").Include("Stories").Include("Stories.Tasks").Single
+                var sprint = context.Sprints.Include("Stages").Include("Stories").Include("Stories.Tasks").Single
                 (
-                    board => board.Id == sampleBoardId
+                    s => s.Id == sprintId
                 );
 
-                sampleBoard.Stages.Load();
-                sampleBoard.Stories.Load();
-
-                return View(sampleBoard);
+                return View(sprint);
             }
         }
 

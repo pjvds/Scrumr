@@ -18,11 +18,10 @@ using System.Runtime.Serialization;
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
 
-[assembly: EdmRelationshipAttribute("ReadModel", "ProjectModelStoryModel", "ProjectModel", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.ProjectModel), "StoryModel", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.StoryModel))]
-[assembly: EdmRelationshipAttribute("ReadModel", "ScrumboardStory", "Scrumboard", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Scrumboard), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Story))]
 [assembly: EdmRelationshipAttribute("ReadModel", "StoryTask", "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Story), "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Task))]
-[assembly: EdmRelationshipAttribute("ReadModel", "ScrumboardStage", "Scrumboard", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Scrumboard), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
-[assembly: EdmRelationshipAttribute("ReadModel", "TaskStage", "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Task), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
+[assembly: EdmRelationshipAttribute("ReadModel", "TaskStage", "Task", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Task), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
+[assembly: EdmRelationshipAttribute("ReadModel", "SprintStage", "Sprint", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Sprint), "Stage", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Stage))]
+[assembly: EdmRelationshipAttribute("ReadModel", "SprintStory", "Sprint", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(Scrumr.Web.MainSite.ReadModel.Sprint), "Story", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(Scrumr.Web.MainSite.ReadModel.Story))]
 
 #endregion
 
@@ -77,34 +76,18 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<ProjectModel> ProjectModels
+        public ObjectSet<Project> Projects
         {
             get
             {
-                if ((_ProjectModels == null))
+                if ((_Projects == null))
                 {
-                    _ProjectModels = base.CreateObjectSet<ProjectModel>("ProjectModels");
+                    _Projects = base.CreateObjectSet<Project>("Projects");
                 }
-                return _ProjectModels;
+                return _Projects;
             }
         }
-        private ObjectSet<ProjectModel> _ProjectModels;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        public ObjectSet<StoryModel> StoryModels
-        {
-            get
-            {
-                if ((_StoryModels == null))
-                {
-                    _StoryModels = base.CreateObjectSet<StoryModel>("StoryModels");
-                }
-                return _StoryModels;
-            }
-        }
-        private ObjectSet<StoryModel> _StoryModels;
+        private ObjectSet<Project> _Projects;
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -157,36 +140,28 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Scrumboard> Scrumboards
+        public ObjectSet<Sprint> Sprints
         {
             get
             {
-                if ((_Scrumboards == null))
+                if ((_Sprints == null))
                 {
-                    _Scrumboards = base.CreateObjectSet<Scrumboard>("Scrumboards");
+                    _Sprints = base.CreateObjectSet<Sprint>("Sprints");
                 }
-                return _Scrumboards;
+                return _Sprints;
             }
         }
-        private ObjectSet<Scrumboard> _Scrumboards;
+        private ObjectSet<Sprint> _Sprints;
 
         #endregion
         #region AddTo Methods
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the ProjectModels EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Projects EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToProjectModels(ProjectModel projectModel)
+        public void AddToProjects(Project project)
         {
-            base.AddObject("ProjectModels", projectModel);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the StoryModels EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToStoryModels(StoryModel storyModel)
-        {
-            base.AddObject("StoryModels", storyModel);
+            base.AddObject("Projects", project);
         }
     
         /// <summary>
@@ -214,11 +189,11 @@ namespace Scrumr.Web.MainSite.ReadModel
         }
     
         /// <summary>
-        /// Deprecated Method for adding a new object to the Scrumboards EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// Deprecated Method for adding a new object to the Sprints EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
         /// </summary>
-        public void AddToScrumboards(Scrumboard scrumboard)
+        public void AddToSprints(Sprint sprint)
         {
-            base.AddObject("Scrumboards", scrumboard);
+            base.AddObject("Sprints", sprint);
         }
 
         #endregion
@@ -232,24 +207,26 @@ namespace Scrumr.Web.MainSite.ReadModel
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="ProjectModel")]
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Project")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class ProjectModel : EntityObject
+    public partial class Project : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new ProjectModel object.
+        /// Create a new Project object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static ProjectModel CreateProjectModel(global::System.Guid id, global::System.String name)
+        /// <param name="shortCode">Initial value of the ShortCode property.</param>
+        public static Project CreateProject(global::System.Guid id, global::System.String name, global::System.String shortCode)
         {
-            ProjectModel projectModel = new ProjectModel();
-            projectModel.Id = id;
-            projectModel.Name = name;
-            return projectModel;
+            Project project = new Project();
+            project.Id = id;
+            project.Name = name;
+            project.ShortCode = shortCode;
+            return project;
         }
 
         #endregion
@@ -305,55 +282,64 @@ namespace Scrumr.Web.MainSite.ReadModel
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
-
-        #endregion
-    
-        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProjectModelStoryModel", "StoryModel")]
-        public EntityCollection<StoryModel> ProductBacklogStoryModels
+        public global::System.String ShortCode
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<StoryModel>("ReadModel.ProjectModelStoryModel", "StoryModel");
+                return _ShortCode;
             }
             set
             {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<StoryModel>("ReadModel.ProjectModelStoryModel", "StoryModel", value);
-                }
+                OnShortCodeChanging(value);
+                ReportPropertyChanging("ShortCode");
+                _ShortCode = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ShortCode");
+                OnShortCodeChanged();
             }
         }
+        private global::System.String _ShortCode;
+        partial void OnShortCodeChanging(global::System.String value);
+        partial void OnShortCodeChanged();
 
         #endregion
+    
     }
     
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Scrumboard")]
+    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="Sprint")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    public partial class Scrumboard : EntityObject
+    public partial class Sprint : EntityObject
     {
         #region Factory Method
     
         /// <summary>
-        /// Create a new Scrumboard object.
+        /// Create a new Sprint object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static Scrumboard CreateScrumboard(global::System.Guid id)
+        /// <param name="projectId">Initial value of the ProjectId property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="from">Initial value of the From property.</param>
+        /// <param name="to">Initial value of the To property.</param>
+        /// <param name="isActive">Initial value of the IsActive property.</param>
+        public static Sprint CreateSprint(global::System.Guid id, global::System.Guid projectId, global::System.String name, global::System.DateTime from, global::System.DateTime to, global::System.Boolean isActive)
         {
-            Scrumboard scrumboard = new Scrumboard();
-            scrumboard.Id = id;
-            return scrumboard;
+            Sprint sprint = new Sprint();
+            sprint.Id = id;
+            sprint.ProjectId = projectId;
+            sprint.Name = name;
+            sprint.From = from;
+            sprint.To = to;
+            sprint.IsActive = isActive;
+            return sprint;
         }
 
         #endregion
@@ -385,6 +371,126 @@ namespace Scrumr.Web.MainSite.ReadModel
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid ProjectId
+        {
+            get
+            {
+                return _ProjectId;
+            }
+            set
+            {
+                OnProjectIdChanging(value);
+                ReportPropertyChanging("ProjectId");
+                _ProjectId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProjectId");
+                OnProjectIdChanged();
+            }
+        }
+        private global::System.Guid _ProjectId;
+        partial void OnProjectIdChanging(global::System.Guid value);
+        partial void OnProjectIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime From
+        {
+            get
+            {
+                return _From;
+            }
+            set
+            {
+                OnFromChanging(value);
+                ReportPropertyChanging("From");
+                _From = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("From");
+                OnFromChanged();
+            }
+        }
+        private global::System.DateTime _From;
+        partial void OnFromChanging(global::System.DateTime value);
+        partial void OnFromChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime To
+        {
+            get
+            {
+                return _To;
+            }
+            set
+            {
+                OnToChanging(value);
+                ReportPropertyChanging("To");
+                _To = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("To");
+                OnToChanged();
+            }
+        }
+        private global::System.DateTime _To;
+        partial void OnToChanging(global::System.DateTime value);
+        partial void OnToChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean IsActive
+        {
+            get
+            {
+                return _IsActive;
+            }
+            set
+            {
+                OnIsActiveChanging(value);
+                ReportPropertyChanging("IsActive");
+                _IsActive = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("IsActive");
+                OnIsActiveChanged();
+            }
+        }
+        private global::System.Boolean _IsActive;
+        partial void OnIsActiveChanging(global::System.Boolean value);
+        partial void OnIsActiveChanged();
 
         #endregion
     
@@ -396,18 +502,18 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStory", "Story")]
-        public EntityCollection<Story> Stories
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "SprintStage", "Stage")]
+        public EntityCollection<Stage> Stages
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Story>("ReadModel.ScrumboardStory", "Story");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Stage>("ReadModel.SprintStage", "Stage");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Story>("ReadModel.ScrumboardStory", "Story", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Stage>("ReadModel.SprintStage", "Stage", value);
                 }
             }
         }
@@ -418,18 +524,18 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStage", "Stage")]
-        public EntityCollection<Stage> Stages
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "SprintStory", "Story")]
+        public EntityCollection<Story> Stories
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Stage>("ReadModel.ScrumboardStage", "Stage");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Story>("ReadModel.SprintStory", "Story");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Stage>("ReadModel.ScrumboardStage", "Stage", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Story>("ReadModel.SprintStory", "Story", value);
                 }
             }
         }
@@ -524,34 +630,18 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStage", "Scrumboard")]
-        public Scrumboard Scrumboard
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "TaskStage", "Task")]
+        public EntityCollection<Task> Task
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Scrumboard> ScrumboardReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Task>("ReadModel.TaskStage", "Task");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Scrumboard>("ReadModel.ScrumboardStage", "Scrumboard", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Task>("ReadModel.TaskStage", "Task", value);
                 }
             }
         }
@@ -562,16 +652,16 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "TaskStage", "Task")]
-        public Task Task
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "SprintStage", "Sprint")]
+        public Sprint Sprint
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStage", "Sprint").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStage", "Sprint").Value = value;
             }
         }
         /// <summary>
@@ -579,17 +669,17 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Task> TaskReference
+        public EntityReference<Sprint> SprintReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Task>("ReadModel.TaskStage", "Task");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStage", "Sprint");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Task>("ReadModel.TaskStage", "Task", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Sprint>("ReadModel.SprintStage", "Sprint", value);
                 }
             }
         }
@@ -684,44 +774,6 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ScrumboardStory", "Scrumboard")]
-        public Scrumboard Scrumboard
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<Scrumboard> ScrumboardReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Scrumboard>("ReadModel.ScrumboardStory", "Scrumboard", value);
-                }
-            }
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
         [EdmRelationshipNavigationPropertyAttribute("ReadModel", "StoryTask", "Task")]
         public EntityCollection<Task> Tasks
         {
@@ -737,90 +789,6 @@ namespace Scrumr.Web.MainSite.ReadModel
                 }
             }
         }
-
-        #endregion
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="ReadModel", Name="StoryModel")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class StoryModel : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new StoryModel object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="description">Initial value of the Description property.</param>
-        public static StoryModel CreateStoryModel(global::System.Guid id, global::System.String description)
-        {
-            StoryModel storyModel = new StoryModel();
-            storyModel.Id = id;
-            storyModel.Description = description;
-            return storyModel;
-        }
-
-        #endregion
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Description
-        {
-            get
-            {
-                return _Description;
-            }
-            set
-            {
-                OnDescriptionChanging(value);
-                ReportPropertyChanging("Description");
-                _Description = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Description");
-                OnDescriptionChanged();
-            }
-        }
-        private global::System.String _Description;
-        partial void OnDescriptionChanging(global::System.String value);
-        partial void OnDescriptionChanged();
-
-        #endregion
-    
-        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -828,16 +796,16 @@ namespace Scrumr.Web.MainSite.ReadModel
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "ProjectModelStoryModel", "ProjectModel")]
-        public ProjectModel ProjectModel
+        [EdmRelationshipNavigationPropertyAttribute("ReadModel", "SprintStory", "Sprint")]
+        public Sprint Sprint
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelStoryModel", "ProjectModel").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStory", "Sprint").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelStoryModel", "ProjectModel").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStory", "Sprint").Value = value;
             }
         }
         /// <summary>
@@ -845,17 +813,17 @@ namespace Scrumr.Web.MainSite.ReadModel
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<ProjectModel> ProjectModelReference
+        public EntityReference<Sprint> SprintReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<ProjectModel>("ReadModel.ProjectModelStoryModel", "ProjectModel");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Sprint>("ReadModel.SprintStory", "Sprint");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<ProjectModel>("ReadModel.ProjectModelStoryModel", "ProjectModel", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Sprint>("ReadModel.SprintStory", "Sprint", value);
                 }
             }
         }
