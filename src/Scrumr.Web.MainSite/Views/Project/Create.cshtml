@@ -1,0 +1,51 @@
+﻿@inherits System.Web.Mvc.WebViewPage<Scrumr.Commands.CreateNewProject>
+
+@{
+    View.Title = "Create";
+    LayoutPage = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+    @using (Html.BeginForm()) {
+        @Html.ValidationSummary(true)
+
+        <fieldset>
+            <legend>Fields</legend>
+            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ProjectId)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.ProjectId)
+                @Html.ValidationMessageFor(model => model.ProjectId)
+            </div>
+            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            
+            <div class="editor-label">
+                @Html.LabelFor(model => model.ShortCode)
+            </div>
+            <div class="editor-field">
+                @Html.TextBoxFor(model => model.ShortCode)
+                @Html.ValidationMessageFor(model => model.ShortCode)
+            </div>
+            
+            <p>
+                <input type="submit" value="Create" />
+            </p>
+        </fieldset>
+
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+

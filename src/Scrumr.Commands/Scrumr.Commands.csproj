@@ -43,9 +43,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddNewSprintToProject.cs" />
     <Compile Include="CreateNewProject.cs" />
     <Compile Include="MoveTaskToStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StartSprint.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

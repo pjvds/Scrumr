@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 using System.ServiceModel;
 using Ncqrs.Commanding;
 using Scrumr.Commands;
@@ -7,7 +6,9 @@ using Scrumr.Commands;
 namespace Scrumr.CommandService
 {
     [ServiceContract]
+    [ServiceKnownType(typeof(AddNewSprintToProject))]
     [ServiceKnownType(typeof(CreateNewProject))]
+    [ServiceKnownType(typeof(StartSprint))]
     public interface IScrumrCommandService
     {
         [OperationContract]

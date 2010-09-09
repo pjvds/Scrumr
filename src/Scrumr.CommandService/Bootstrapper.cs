@@ -33,7 +33,6 @@ namespace Scrumr.CommandServicing
 
             var service = new Ncqrs.Commanding.ServiceModel.CommandService();
             service.RegisterExecutorsInAssembly(commandAssembly);
-
             return service;
         }
 

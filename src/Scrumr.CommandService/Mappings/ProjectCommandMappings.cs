@@ -1,35 +1,40 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Ncqrs.Commanding.CommandExecution;
-using Ncqrs.Commanding.CommandExecution.Mapping.Fluent;
 using Scrumr.Commands;
 using Scrumr.Domain;
-using Ncqrs.Commanding;
+using Ncqrs.Commanding.CommandExecution.Mapping;
+using Ncqrs.Commanding.CommandExecution.Mapping.Fluent;
 
 namespace Scrumr.CommandService.Mappings
 {
-    public class ProjectCommandMappings
-    {
-        //public IEnumerable<ICommandExecutor<ICommand>> Test()
-        //{
-        //    yield return Map
-        //        .Command<CreateNewProject>()
-        //        .ToAggregateRoot<Project>()
-        //        .CreateNew(c => new Project(c.ProjectId, c.Name));
+    //public class ProjectMappings : MappingFor<Project>
+    //{
+    //    public override void RegisterExecutors(Ncqrs.Commanding.ServiceModel.CommandService service)
+    //    {
+    //        MapCreate<CreateNewProject>((c) => new Project(c.ProjectId, c.Name, c.ShortCode));
+    //        Map<AddNewSprintToProject>().WithId()
+    //    }
+    //}
 
-        //    yield return Map
-        //        .Command<AddNewStoryToProductBacklog>()
-        //        .ToAggregateRoot<Project>()
-        //        .WithId(c => c.ProductId)
-        //        .ToCallOn((c, a) => a.ProductBacklog.AddStory(c.StoryId, c.StoryDescription));
+    //public class ProjectCommandMappings
+    //{
+    //    public void AddExecutorsToService(Ncqrs.Commanding.ServiceModel.CommandService service)
+    //    {
+    //        service.RegisterExecutor(
+    //            Map.Command<CreateNewProject>()
+    //                .ToAggregateRoot<Project>()
+    //                .CreateNew(c => new Project(c.ProjectId, c.Name, c.ShortCode)));
 
-        //    //yield return Map
-        //    //    .Command<ChangeProductBacklogStoryDescription>()
-        //    //    .ToAggregateRoot<Project>()
-        //    //    .WithId(c=>c.ProjectId)
-        //    //    .ToCallOn((c,a)=>a.ProductBacklog.Stories.Where(s=> s.Renamed(c.NewDescription)))
-        //}
-    }
+    //        Map
+    //            .Command<AddNewSprintToProject>()
+    //            .ToAggregateRoot<Project>()
+    //            .WithId(c => c.ProjectId)
+    //            .ToCallOn((c, a) => a.AddSprint(c.SprintId, c.Name, c.From, c.To));
+
+    //        Map
+    //            .Command<ChangeProductBacklogStoryDescription>()
+    //            .ToAggregateRoot<Project>()
+    //            .WithId(c=>c.ProjectId)
+    //            .ToCallOn((c,a)=>a.ProductBacklog.Stories.Where(s=> s.Renamed(c.NewDescription)))
+    //    }
+    //}
 }

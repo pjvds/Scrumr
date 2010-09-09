@@ -23,22 +23,16 @@ namespace Scrumr.Domain
             ApplyEvent(new NewProjectCreated(id, name, shortCode));
         }
 
-        public void ChangeActiveSprint(Guid sprintId)
+        public void StartSprint(Guid sprintId)
         {
-            var currentlyActive = _sprints.SingleOrDefault(sprint => sprint.IsActive);
-            var newActive = _sprints.SingleOrDefault(sprint => sprint.EntityId == sprintId);
+            var sprintToStart = _sprints.SingleOrDefault(sprint => sprint.EntityId == sprintId);
+            sprintToStart.Start();
+        }
 
-            if(newActive == null)
-            {
-                throw new DomainException("Cannot set activate sprint to sprint with id "+sprintId+" since it is not part of the project.");
-            }
-
-            if(currentlyActive != null)
-            {
-                currentlyActive.Deactivate();
-            }
-
-            newActive.Activate();
+        public void FinishSprint(Guid sprintId)
+        {
+            var sprintToFinish = _sprints.SingleOrDefault(sprint => sprint.EntityId == sprintId);
+            sprintToFinish.Finish();
         }
 
         protected void ValidateName(string name)
@@ -71,10 +65,15 @@ namespace Scrumr.Domain
             ApplyEvent(e);
         }
 
-        public void AddSprint(Guid id, string name, DateTime from, DateTime to)
+        public void AddSprint(Guid sprintId, string name, DateTime from, DateTime to)
         {
             // TODO: Add constrains.
-            ApplyEvent(new SprintAddedToProject(name, from, to));
+            ApplyEvent(new SprintAddedToProject(sprintId, name, from, to));
+
+            var sprint = _sprints.Single(s => s.EntityId == sprintId);
+            sprint.AddStage(Guid.NewGuid(), "Unstarted");
+            sprint.AddStage(Guid.NewGuid(), "Ongoing");
+            sprint.AddStage(Guid.NewGuid(), "Completed");
         }
 
         protected  void OnProjectCreated(NewProjectCreated e)
