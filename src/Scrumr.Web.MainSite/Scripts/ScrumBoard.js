@@ -66,15 +66,8 @@ $(function () {
 
     }
 
-    $("#dialog-form").dialog({
-        autoOpen: false,
-        height: 300,
-        width: 350,
-        modal: true
-
-    });
-
-    $('#create-new-story').button().click(function () {
+    $('#new-story-container').click(function () {
+        $(".ui-dialog-titlebar").hide();
         var dialog = $('#new-story-dialog');
         var button = $(this);
         dialog.dialog('option', 'position', [button.position().left, button.position().top]);
@@ -82,10 +75,10 @@ $(function () {
     });
 
     $('#new-story-dialog').dialog({
-        autoOpen: false, closeOnEscape: false, draggable: false,
+        autoOpen: false, closeOnEscape: true, draggable: false,
         buttons: {
             'Create': function () {
-                $.post('/Project/AddStory', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function(data){
+                $.post('/Project/AddStory', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function (data) {
                     alert(data); // John
                 }, "json");
 

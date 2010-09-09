@@ -16,7 +16,10 @@ namespace Scrumr.Web.MainSite.Commanding {
     public interface IScrumrCommandService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IScrumrCommandService/ExecuteCommand", ReplyAction="http://tempuri.org/IScrumrCommandService/ExecuteCommandResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Scrumr.Commands.AddNewSprintToProject))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Scrumr.Commands.CreateNewProject))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Scrumr.Commands.AddNewStoryToSprint))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Scrumr.Commands.StartSprint))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(Ncqrs.Commanding.CommandBase))]
         void ExecuteCommand(object command);
     }
