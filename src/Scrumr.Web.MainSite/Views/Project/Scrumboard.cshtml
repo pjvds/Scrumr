@@ -30,7 +30,7 @@
         <tbody>
             @foreach (var story in Model.Stories)
             {
-            <tr>
+            <tr class="story-row">
                 <td>
                     @story.Description
                 </td>
@@ -49,7 +49,7 @@
                 } 
             </tr>
             } 
-			<tr class="new-story-row">
+			<tr class="story-row new-story-row">
 				<td>
 					<div id="new-story-container">Click for new</div>
 				</td>
@@ -64,9 +64,11 @@
 		<p class="validateTips">All form fields are required.</p>
 
 		<form>
-		<fieldset>
-			<label for="description">description</label>
 			<input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all" />
-		</fieldset>
 		</form>
 	</div>
+	<div id="new-task" class="task ui-widget-content ui-corner-tr">
+                        <h5 class="ui-widget-header">
+                            New task</h5>
+						test
+    </div>

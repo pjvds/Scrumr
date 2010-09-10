@@ -9,6 +9,15 @@ function initBoard($pId, $sId) {
 $(function () {
     var $board = $('#board');
 
+    $('.storystage').mouseenter(function () {
+        $('#new-task').appendTo($(this));
+        $('#new-task').show();
+    });
+
+    $('.storystage').mouseleave(function () {
+        $('#new-task').hide();
+    });
+
     // let the storystages be droppable, accepting the tasks
     $('.storystage', $board).droppable({
         accept: '#board .task',
@@ -71,25 +80,28 @@ $(function () {
         var dialog = $('#new-story-dialog');
         var button = $(this);
         dialog.dialog('option', 'position', [button.position().left, button.position().top]);
-        dialog.dialog("open");
+        dialog.dialog('option', 'width', '50');
+        dialog.dialog('open');
     });
 
     $('#new-story-dialog').dialog({
-        autoOpen: false, closeOnEscape: true, draggable: false,
-        buttons: {
-            'Create': function () {
-                $.post('/Project/AddStory', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function (data) {
-                    alert(data); // John
-                }, "json");
-
-                $(this).dialog('close');
-            },
-            Cancel: function () {
-                $(this).dialog('close');
-            }
-        },
+        autoOpen: false, closeOnEscape: true, draggable: false, resizable: false,
         close: function () {
             allFields.val('').removeClass('ui-state-error');
         }
+    });
+
+    $('#new-story-ok').click(function () {
+        $.post('/Project/AddStory', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function (data) {
+            alert(data);
+            $('#new-story-dialog').dialog('close');
+        }, "json");
+
+        return false;
+    });
+
+    $('#new-story-close').click(function () {
+        $('#new-story-dialog').dialog('close');
+        return false;
     });
 });
