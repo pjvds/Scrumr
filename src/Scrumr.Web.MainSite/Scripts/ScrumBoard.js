@@ -9,6 +9,27 @@ function initBoard($pId, $sId) {
 $(function () {
     var $board = $('#board');
 
+    $('#new-task-dialog').dialog({
+        autoOpen: false, closeOnEscape: true, draggable: false, resizable: false,
+        close: function () {
+            allFields.val('').removeClass('ui-state-error');
+        }
+    });
+
+    $('#new-task-ok').click(function () {
+        $.post('#', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function (data) {
+            alert(data);
+            $('#new-task-dialog').dialog('close');
+        }, "json");
+
+        return false;
+    });
+
+    $('#new-task-cancel').click(function () {
+        $('#new-task-dialog').dialog('close');
+        return false;
+    });
+
     $('.storystage').mouseenter(function () {
         $('#new-task').appendTo($(this));
         $('#new-task').show();
@@ -42,11 +63,6 @@ $(function () {
         });
         $.post('/Project/MoveTask', { ProjectId: $projectId, TaskId: "00000000-0000-0000-0000-000000000002", StageId: "00000000-0000-0000-0000-000000000003" });
     }
-
-    function showAddNewStoryDialog($projectId, $sprintId) {
-
-    }
-
 
     var description = $("#name"),
 	    email = $("#email"),
