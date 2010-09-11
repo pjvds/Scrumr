@@ -32,14 +32,24 @@ namespace Scrumr.Web.MainSite.Controllers
             return RedirectToAction("ScrumBoard", new {createCommand.ProjectId});
         }
 
-        public Guid AddStory(Guid projectId, Guid sprintId, string description)
+        public ActionResult AddTaskToStory(Guid projectId, Guid sprintId, Guid stageId, Guid storyId, String description)
+        {
+            var taskId = Guid.NewGuid();
+            var cmd = new AddNewTaskToStory(projectId, sprintId, stageId, storyId, taskId, description);
+            var service = new ScrumrCommandServiceClient();
+            service.ExecuteCommand(cmd);
+
+            return Json(taskId);
+        }
+
+        public ActionResult AddStory(Guid projectId, Guid sprintId, string description)
         {
             Guid storyId = Guid.NewGuid();
             var cmd = new AddNewStoryToSprint(projectId, sprintId, storyId, description);
             var service = new ScrumrCommandServiceClient();
             service.ExecuteCommand(cmd);
 
-            return storyId;
+            return Json(storyId);
         }
 
         public ActionResult ScrumBoard(Guid sprintId)
@@ -61,8 +71,8 @@ namespace Scrumr.Web.MainSite.Controllers
         [HttpPost]
         public void MoveTask(MoveTaskToStage cmd)
         {
-            var service = new ScrumrCommandServiceClient();
-            service.ExecuteCommand(cmd);
+            //var service = new ScrumrCommandServiceClient();
+            //service.ExecuteCommand(cmd);
         }
     }
 }

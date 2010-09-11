@@ -7,7 +7,7 @@ using Scrumr.Events.Project;
 namespace Scrumr.Web.MainSite.ReadModel.Denormalizer
 {
     public class ProjectDenormalizer : IEventHandler<NewProjectCreated>,
-        IEventHandler<SprintAddedToProject>, IEventHandler<SprintStarted>, IEventHandler<SprintFinished>, IEventHandler<NewStageAddedToSprint>, IEventHandler<AddNewStoryToSprint>
+        IEventHandler<SprintAddedToProject>, IEventHandler<SprintStarted>, IEventHandler<SprintFinished>, IEventHandler<NewStageAddedToSprint>, IEventHandler<AddNewStoryToSprint>, IEventHandler<NewTaskAddedToStory>
     {
         public void Handle(NewProjectCreated evnt)
         {
@@ -91,6 +91,26 @@ namespace Scrumr.Web.MainSite.ReadModel.Denormalizer
                     };
 
                 context.AddToStories(newStory);
+                context.SaveChanges();
+            }
+        }
+
+        public void Handle(NewTaskAddedToStory evnt)
+        {
+            using (var context = new ReadModelContainer())
+            {
+                var story = context.Stories.Single(s => s.Id == evnt.StoryId);
+                var stage = context.Stages.Single(s => s.Id == evnt.StageId);
+
+                var newTask = new Task
+                    {
+                        Id = evnt.TaskId,
+                        Story = story,
+                        Stage = stage,
+                        Description = evnt.Description
+                    };
+
+                context.AddToTasks(newTask);
                 context.SaveChanges();
             }
         }

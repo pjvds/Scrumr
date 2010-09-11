@@ -65,6 +65,13 @@ namespace Scrumr.Domain
             ApplyEvent(e);
         }
 
+        public void AddNewTaskToStory(Guid sprintId, Guid stageId, Guid storyId, Guid newTaskId, String description)
+        {
+            var sprint = _sprints.Single(s => s.EntityId == sprintId);
+            var story = sprint.Stories.Single(s => s.EntityId == storyId);
+            story.AddNewTask(newTaskId, stageId, description);
+        }
+
         public void AddNewStoryToSprint(Guid sprintId, Guid storyId, String description)
         {
             var sprint = _sprints.Single(s => s.EntityId == sprintId);

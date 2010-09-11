@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ncqrs.Domain;
 using Scrumr.Events.Project;
 
@@ -12,6 +13,11 @@ namespace Scrumr.Domain
         private DateTime _to;
         private List<Stage> _stages;
         private List<Story> _stories;
+
+        public IEnumerable<Story> Stories
+        {
+            get { return _stories; }
+        }
 
         public bool IsActive
         {

@@ -11,7 +11,7 @@ namespace Scrumr.Domain
         private string _name;
         private string _description;
 
-        private List<Task> _tasks;
+        private List<Task> _tasks = new List<Task>();
 
         public Story(AggregateRoot parent, Sprint sprint, Guid id, string description)
             : base(parent, id)
@@ -20,9 +20,14 @@ namespace Scrumr.Domain
             _description = description;
         }
 
-        public void AddTask(Guid taskId, string name)
+        public void AddNewTask(Guid taskId, Guid stageId, string description)
         {
-            ApplyEvent(new TaskAddedToStory(_sprint.EntityId, taskId, name));
+            ApplyEvent(new NewTaskAddedToStory(_sprint.EntityId, stageId, taskId, description));
+        }
+
+        protected void OnNewTaskAddedToStory(NewTaskAddedToStory e)
+        {
+            _tasks.Add(new Task(ParentAggregateRoot, _sprint, e.StageId, e.TaskId, e.Description));
         }
     }
 }

@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AddNewSprintToProject.cs" />
     <Compile Include="AddNewStoryToSprint.cs" />
+    <Compile Include="AddNewTaskToStory.cs" />
     <Compile Include="CreateNewProject.cs" />
     <Compile Include="MoveTaskToStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

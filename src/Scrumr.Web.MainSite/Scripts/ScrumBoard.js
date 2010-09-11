@@ -8,17 +8,39 @@ function initBoard($pId, $sId) {
 
 $(function () {
     var $board = $('#board');
+    $('button').button();
+
+    $('#new-task').click(function () {
+        var d = $('#new-task-dialog');
+
+        d.dialog('open');
+
+        d.dialog('widget').position({
+            of: $('#new-task'),
+            my: 'center center',
+            at: 'center center'
+        });
+    });
 
     $('#new-task-dialog').dialog({
-        autoOpen: false, closeOnEscape: true, draggable: false, resizable: false,
-        close: function () {
-            allFields.val('').removeClass('ui-state-error');
-        }
+        autoOpen: false, closeOnEscape: true, draggable: false, resizable: false, modal: true
     });
 
     $('#new-task-ok').click(function () {
-        $.post('#', { ProjectId: $projectId, SprintId: $sprintId, Description: $('#description').val() }, function (data) {
-            alert(data);
+        var parent = $('#new-task').parent();
+        var storyAndStage = parent.attr('id').split('|');
+        var storyId = storyAndStage[0];
+        var stageId = storyAndStage[1];
+        var description = $('#new-task-dialog #description').val();
+
+        $.post('/Project/AddTaskToStory', { ProjectId: $projectId, SprintId: $sprintId, StageId: stageId, StoryId: storyId, Description: description }, function (data) {
+            var taskId = data;
+            var newTaskElement = $('#new-task-prototype').clone();
+            newTaskElement.attr('id', taskId);
+            newTaskElement.appendTo(parent);
+
+            newTaskElement.children('.description')[0].innerHTML = description;
+
             $('#new-task-dialog').dialog('close');
         }, "json");
 
@@ -62,33 +84,6 @@ $(function () {
             $item.appendTo($target).show();
         });
         $.post('/Project/MoveTask', { ProjectId: $projectId, TaskId: "00000000-0000-0000-0000-000000000002", StageId: "00000000-0000-0000-0000-000000000003" });
-    }
-
-    var description = $("#name"),
-	    email = $("#email"),
-		password = $("#password"),
-		allFields = $([]).add(name).add(email).add(password),
-		tips = $(".validateTips");
-
-    function updateTips(t) {
-        tips
-				.text(t)
-				.addClass('ui-state-highlight');
-        setTimeout(function () {
-            tips.removeClass('ui-state-highlight', 1500);
-        }, 500);
-    }
-
-    function checkLength(o, n, min, max) {
-
-        if (o.val().length > max || o.val().length < min) {
-            o.addClass('ui-state-error');
-            updateTips("Length of " + n + " must be between " + min + " and " + max + ".");
-            return false;
-        } else {
-            return true;
-        }
-
     }
 
     $('#new-story-container').click(function () {

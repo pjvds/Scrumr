@@ -36,13 +36,13 @@
                 </td>
                 @foreach (var stage in Model.Stages)
                 {
-                <td class="storystage">
+                <td id="@story.Id|@stage.Id" class="storystage">
                     @foreach (var task in story.Tasks.Where(t => t.Stage.Id == stage.Id))
                     {
                     <div class="task ui-widget-content ui-corner-tr">
                         <h5 class="ui-widget-header">
                             Task</h5>
-							@task.Description
+							<p class="description">@task.Description</p>
                     </div>
                     }
                 </td>
@@ -61,14 +61,22 @@
         </tbody>
     </table>
 	<div id="new-story-dialog" title="Create new user">
-		<p class="validateTips">All form fields are required.</p>
-
 		<form>
 			<input type="text" name="description" id="description" class="text ui-widget-content ui-corner-all" />
 		</form>
 	</div>
 	<div id="new-task" class="task ui-widget-content ui-corner-tr">
-                        <h5 class="ui-widget-header">
-                            New task</h5>
-						test
+		<h5 class="ui-widget-header">New Task</h5>
+        <i>Click to add new task</i>
+    </div>
+	<div id="new-task-dialog" title="Add new task">
+		<form>
+			<textarea name="description" id="description" class="text ui-widget-content ui-corner-all"></textarea>
+			<button id="new-task-ok">Ok</button>
+			<button id="new-task-cancel">Cancel</button>
+		</form>
+	</div>
+	<div id="new-task-prototype" class="task ui-widget-content ui-corner-tr">
+		<h5 class="ui-widget-header">Task</h5>
+		<p class="description"></p>
     </div>

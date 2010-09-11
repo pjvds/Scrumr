@@ -57,7 +57,7 @@
     <Compile Include="Project\SprintFinished.cs" />
     <Compile Include="Project\StoryAddedToProductBacklog.cs" />
     <Compile Include="Project\StoryRemovedFromProductBacklog.cs" />
-    <Compile Include="Project\TaskAddedToStory.cs" />
+    <Compile Include="Project\NewTaskAddedToStory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,11 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Ncqrs.Domain;
 
 namespace Scrumr.Domain
 {
-    class Task
+    public class Task : EntityMappedByConvention
     {
+        private Sprint _parent;
+        private Guid _stageId;
+        private string _description;
+
+        public Task(AggregateRoot root, Sprint parent, Guid stageId, Guid taskId, String description)
+            : base(root, taskId)
+        {
+            _parent = parent;
+            _stageId = stageId;
+            _description = description;
+        }
     }
 }
